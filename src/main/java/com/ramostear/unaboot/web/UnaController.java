@@ -4,6 +4,8 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -73,6 +75,28 @@ public class UnaController {
         return "redirect:"+path;
     }
 
+
+    /**
+     * 异步请求成功返回值
+     * @return
+     */
+    protected ResponseEntity<Object> ok(){
+        return ResponseEntity.ok().build();
+    }
+    protected ResponseEntity<Object> ok(String msg){
+        return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
+
+    /**
+     * 异步请求失败返回值
+     * @return
+     */
+    protected ResponseEntity<Object> badRequest(){
+        return ResponseEntity.badRequest().build();
+    }
+    protected ResponseEntity<Object> badRequest(String msg){
+        return new ResponseEntity<>(msg,HttpStatus.BAD_REQUEST);
+    }
 
     private Pageable initPage(String field,int type){
         return initPage(field,type,15);
