@@ -1,4 +1,4 @@
-package com.ramostear.unaboot.domain.valid;
+package com.ramostear.unaboot.domain.param;
 
 import com.ramostear.unaboot.common.util.PinyinUtils;
 import com.ramostear.unaboot.domain.dto.support.InputConvert;
@@ -10,14 +10,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * @ClassName CategoryValid
+ * @ClassName CategoryParam
  * @Description TODO
  * @Author ramostear
  * @Date 2019/11/13 0013 2:23
  * @Version 1.0
  **/
 @Data
-public class CategoryValid implements InputConvert<Category> {
+public class CategoryParam implements InputConvert<Category> {
 
     @NotBlank(message = "category name must not be empty")
     @Size(max = 50,message = "the length of category name cannot be greater than {max}")
@@ -40,9 +40,6 @@ public class CategoryValid implements InputConvert<Category> {
     private String template;
 
     private Integer allowNav = 0;
-
-    @Size(max=255,message = "the length of category projectUrl name cannot be greater than {max}")
-    private String projectUrl;
 
     @Override
     public Category convertTo() {

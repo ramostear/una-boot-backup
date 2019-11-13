@@ -1,4 +1,4 @@
-package com.ramostear.unaboot.domain.valid;
+package com.ramostear.unaboot.domain.param;
 
 import com.ramostear.unaboot.domain.dto.support.InputConvert;
 import com.ramostear.unaboot.domain.entity.User;
@@ -9,14 +9,14 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 /**
- * @ClassName UserValid
+ * @ClassName UserParam
  * @Description TODO
  * @Author ramostear
  * @Date 2019/11/9 0009 0:25
  * @Version 1.0
  **/
 @Data
-public class UserValid implements InputConvert<User> {
+public class UserParam implements InputConvert<User> {
 
     @NotBlank(message = "username must not be null")
     @Size(max = 64,message = "The length of username can not exceed {max}")

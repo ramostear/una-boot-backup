@@ -48,9 +48,6 @@ public class Category extends UnaEntity {
     @Column(name = "allow_nav",columnDefinition = "int default 0")
     private Integer allowNav;
 
-    @Column(name = "project_url",columnDefinition = "varchar(255) default ''")
-    private String projectUrl;
-
     @Override
     protected void prePersist() {
         super.prePersist();

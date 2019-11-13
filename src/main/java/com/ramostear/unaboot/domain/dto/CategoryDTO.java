@@ -36,8 +36,6 @@ public class CategoryDTO implements OutputConvert<CategoryDTO, Category> {
 
     private Integer allowNav;
 
-    private String projectUrl;
-
     private Date createTime;
 
 }

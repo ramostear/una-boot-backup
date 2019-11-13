@@ -3,7 +3,7 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.unaboot.common.UnaConst;
 import com.ramostear.unaboot.domain.dto.CategoryDTO;
 import com.ramostear.unaboot.domain.entity.Category;
-import com.ramostear.unaboot.domain.valid.CategoryValid;
+import com.ramostear.unaboot.domain.param.CategoryParam;
 import com.ramostear.unaboot.domain.vo.CategoryVO;
 import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.ThemeService;
@@ -58,9 +58,9 @@ public class CategoryController extends UnaController {
     @ResponseBody
     @PutMapping("/{categoryId:\\d+}")
     public CategoryDTO update(@PathVariable("categoryId")Integer categoryId,
-                              @RequestBody @Valid CategoryValid valid){
+                              @RequestBody @Valid CategoryParam param){
         Category category = categoryService.getById(categoryId);
-        valid.update(category);
+        param.update(category);
         return categoryService.convertTo(categoryService.update(category));
     }
 
@@ -72,7 +72,7 @@ public class CategoryController extends UnaController {
 
     @ResponseBody
     @PostMapping(produces = "application/json;utf-8")
-    public CategoryDTO create(@RequestBody @Valid CategoryValid valid){
+    public CategoryDTO create(@RequestBody @Valid CategoryParam valid){
         return categoryService.convertTo(categoryService.create(valid.convertTo()));
     }
 
