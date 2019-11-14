@@ -31,7 +31,7 @@ public interface PostTagRepository extends UnaRepository<PostTag,Integer> {
     Set<Integer> findAllPostIdsByTagIdAndPostStatus(@NonNull @Param("tagId")Integer tagId,@NonNull @Param("status")Integer status);
 
     @NonNull
-    List<PostTag> findAllByPostIdIn(@NonNull Iterator<Integer> postIds);
+    List<PostTag> findAllByPostIdIn(@NonNull Iterable<Integer> postIds);
 
     @NonNull
     List<PostTag> deleteByPostId(@NonNull Integer postId);

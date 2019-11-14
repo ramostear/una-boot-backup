@@ -37,7 +37,7 @@ public interface PostService extends IUnaService<Post,Integer> {
     boolean existBy(@NonNull String slug);
 
     @NonNull
-    PostVO converToPostVO(@NonNull Post post);
+    PostVO convertToPostVO(@NonNull Post post);
 
     @NonNull
     Page<PostListVO> convertToPostListVO(@NonNull Page<Post> postPage);
