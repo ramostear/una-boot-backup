@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ public interface PostCategoryRepository extends UnaRepository<PostCategory,Integ
 
     @NonNull
     @Query("select pc.categoryId from PostCategory as pc where pc.postId= :postId")
-    Set<Integer> findCategoryIdsByPostId(@NonNull @Param("postId")Integer postId);
+    Integer findCategoryIdByPostId(@NonNull @Param("postId")Integer postId);
 
     @NonNull
     @Query("select pc.postId from PostCategory as pc where pc.categoryId= :categoryId")
@@ -27,10 +26,10 @@ public interface PostCategoryRepository extends UnaRepository<PostCategory,Integ
                                                       @NonNull @Param("status")Integer status);
 
     @NonNull
-    List<PostCategory> findAllByPostIdIn(@NonNull Iterator<Integer>postIds);
+    List<PostCategory> findAllByPostIdIn(@NonNull Iterable<Integer>postIds);
 
     @NonNull
-    List<PostCategory> findAllByPostId(@NonNull Integer postId);
+    PostCategory findByPostId(@NonNull Integer postId);
 
     @NonNull
     List<PostCategory> findAllByCategoryId(@NonNull Integer categoryId);
@@ -44,4 +43,9 @@ public interface PostCategoryRepository extends UnaRepository<PostCategory,Integ
     @NonNull
     @Query("select new com.ramostear.unaboot.domain.vo.CategoryPostCountVO(count(pc.postId),pc.categoryId,c.name,c.slug) from PostCategory as pc,Category as c where pc.categoryId = c.id group by pc.categoryId")
     List<CategoryPostCountVO> findCatetoryPostCount();
+
+
+    @NonNull
+    @Query("select new com.ramostear.unaboot.domain.vo.CategoryPostCountVO(count(pc.postId),pc.categoryId,c.name,c.slug) from PostCategory as pc,Category as c,Post as p where pc.categoryId = c.id and pc.postId = p.id and p.status = :status group by pc.categoryId")
+    List<CategoryPostCountVO> findCatetoryPostCountByPostStatus(@NonNull @Param("status") Integer status);
 }
