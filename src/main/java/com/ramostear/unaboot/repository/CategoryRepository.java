@@ -4,6 +4,7 @@ import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.repository.support.UnaRepository;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends UnaRepository<Category,Integer> {
@@ -15,4 +16,6 @@ public interface CategoryRepository extends UnaRepository<Category,Integer> {
     Optional<Category> getBySlug(@NonNull String slug);
 
     Optional<Category> getByName(@NonNull String name);
+
+    List<Category> findAllByAllowNavOrderBySortNumDesc(Integer allowNav);
 }

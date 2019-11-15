@@ -29,4 +29,6 @@ public interface CategoryService extends IUnaService<Category,Integer> {
     CategoryDTO convertTo(@NonNull Category category);
 
     List<CategoryDTO> convertTo(@NonNull Collection<Category> categories);
+
+    List<Category> navigation();
 }

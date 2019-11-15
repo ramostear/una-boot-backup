@@ -1,0 +1,67 @@
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate.format_sql: true
+      hibernate.naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      hibernate.cache.use_second_level_cache: false
+      hibernate.search.default.directory_provider: filesystem
+      hibernate.search.default.indexBase: ./indexes
+      hibernate.enable_lazy_load_no_trans: true
+    open-in-view: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+      #主数据源
+      master:
+        url:  jdbc:mysql://localhost:3306/una-boot-db?useUnicode=true&useSSL=false&characterEncoding=utf8
+        username: root
+        password: root
+      #从数据源
+      slave:
+        enabled:  false
+        url:
+        username:
+        password:
+      #初始化连接数
+      initialSize:  5
+      #最小连接池数量
+      minIdle:  10
+      #最大连接池数量
+      maxActive:  20
+      #配置获取连接等待超时的时间
+      maxWait:  60000
+      #配置检测的间隔时间，检测时需要关闭空闲的连接，单位为毫秒
+      timeBetweenEvictionRunsMillis:  60000
+      #配置连接池最小的生命周期,单位毫秒
+      minEvictableIdleTimeMillis: 300000
+      #配置连接池最大的生命周期，单位毫秒
+      maxEvictableIdleTimeMillis: 900000
+      #配置检测连接是否有效
+      validationQuery:  SELECT 1 FROM DUAL
+      testWhileIdle:  true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled:  true
+      statViewServlet:
+        enabled:  true
+        #设置白名单，不填写则允许所有访问
+        allow:
+        url-pattern: /admin/druid/*
+      filter:
+        stat:
+          enabled:  true
+          #慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis:  1000
+          merge-sql:  true
+        wall:
+          config:
+            multi-statement-allow:  true

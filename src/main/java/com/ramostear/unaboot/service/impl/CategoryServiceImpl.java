@@ -112,6 +112,11 @@ public class CategoryServiceImpl extends UnaService<Category,Integer> implements
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Category> navigation() {
+        return categoryRepository.findAllByAllowNavOrderBySortNumDesc(1);
+    }
+
     @NonNull
     private CategoryVO getRoot(){
         CategoryVO vo = new CategoryVO();

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ The MIT License (MIT)
+  ~
+  ~ Copyright © 2019 ramostear <ramostear@163.com>
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  -->
+
+<configuration>
+    <!--日志输出位置-->
+    <property name="log.path" value="C:/home/una/logs"/>
+
+    <!--&lt;!&ndash; 彩色日志依赖的渲染类 &ndash;&gt;
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    &lt;!&ndash; 彩色日志格式 &ndash;&gt;
+    <property name="log.pattern"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    &lt;!&ndash; 控制台输出 &ndash;&gt;
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            &lt;!&ndash;引用log.pattern&ndash;&gt;
+            <pattern>${log.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <filter class="com.ramostear.una.web.filter.LogFilter"></filter>
+    </appender>
+
+    &lt;!&ndash; 系统日志输出 &ndash;&gt;
+    <appender name="system_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/system-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            &lt;!&ndash; 按天回滚 daily &ndash;&gt;
+            <fileNamePattern>${log.path}/system-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            &lt;!&ndash; 日志最大的历史 60天 &ndash;&gt;
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    &lt;!&ndash;系统错误日志输出&ndash;&gt;
+    <appender name="system_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/system-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/system-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            &lt;!&ndash; 日志最大的历史 60天 &ndash;&gt;
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    &lt;!&ndash; 显示形成的sql、使用的参数、结果集 &ndash;&gt;
+    <logger name="java.sql" level="debug"/>
+    <logger name="org.springframework.jdbc" level="debug"/>
+
+    <logger name="com.ramostear.una" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+
+    &lt;!&ndash;系统操作日志&ndash;&gt;
+    <root level="info">
+        <appender-ref ref="system_info"/>
+        <appender-ref ref="system_error"/>
+        <appender-ref ref="STDOUT"/>
+    </root>-->
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <property name="LOG_FILE"
+              value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}" />
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <filter class="com.ramostear.una.web.filter.LogFilter"></filter>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</configuration>

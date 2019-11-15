@@ -1,0 +1,53 @@
+server:
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+    max-threads: 800
+    min-spare-threads: 50
+    max-http-post-size: -1
+  port: 80
+  max-http-header-size: 10000
+logging:
+  level:
+    com.ramostear.una:  debug
+    org.springframework:  warn
+    org.spring.springboot:  debug
+spring:
+  freemarker:
+    enabled: true
+    cache: false
+    charset: UTF-8
+    settings:
+      classic_compatible: true
+      template_exception_handler: rethrow
+      template_update_delay:  0
+      datetime_format:  yyyy-MM-dd HH:mm
+      number_format:  0.##
+    template-loader-path:
+      - classpath:/templates/
+    prefix:
+    suffix: .html
+  resources:
+    static-locations:
+      - classpath:/static/
+  devtools:
+    restart:
+      enabled: true
+  aop:
+    auto: true
+    proxy-target-class: true
+  mvc:
+    favicon:
+      enabled: false
+  application:
+    name: una-boot
+  profiles:
+    active: druid
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
+xss:
+  enabled:  false
+  urlPatterns:  /monitor/*
