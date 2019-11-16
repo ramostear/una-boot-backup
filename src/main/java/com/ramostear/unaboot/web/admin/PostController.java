@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.UnaConst;
 import com.ramostear.unaboot.common.exception.UnaException;
 import com.ramostear.unaboot.common.util.DateUtils;
 import com.ramostear.unaboot.common.util.RandomUtils;
@@ -12,6 +13,7 @@ import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.web.UnaController;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.text.SimpleDateFormat;
 @Slf4j
 @Controller
 @RequestMapping("/admin/posts")
+@RequiresRoles(value = {UnaConst.DEFAULT_ROLE_NAME})
 public class PostController extends UnaController {
 
     @Autowired
