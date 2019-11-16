@@ -5,6 +5,7 @@ import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
 import freemarker.template.TemplateModelException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,10 +17,11 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class FreemarkerShiroConfigurer extends SimpleHash {
 
+    @Autowired
     private Configuration configuration;
 
     @PostConstruct
-    public void setSharedVariable() throws TemplateModelException{
+    public void setSharedVariable() {
         configuration.setSharedVariable("shiro",new FreemarkerShiroConfigurer());
         log.debug("init freemarker-shiro tag name as shiro");
     }

@@ -35,7 +35,7 @@ public abstract class TemplateDirective extends ApplicationObjectSupport impleme
         className = className.substring(className.lastIndexOf(".")+1);
         String beanName = StringUtils.uncapitalize(className);
         String tagName = UnaConst.RENDER_TAG_PREFIX+ NameUtils.humpToUnderline(beanName);
-        log.debug("tag name :[{}]",tagName);
+        log.info("tag name :[{}]",tagName);
         freeMarkerConfigurer.getConfiguration()
                 .setSharedVariable(tagName,this.getApplicationContext().getBean(beanName));
     }
@@ -44,13 +44,17 @@ public abstract class TemplateDirective extends ApplicationObjectSupport impleme
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         try {
             execute(new DirectiveHandler(env, params, loopVars, body));
-        }catch (TemplateException ex){
-            throw ex;
+        }catch (Exception ex){
+            try {
+                throw ex;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     abstract public String getName();
 
-    abstract public void execute(DirectiveHandler handler) throws TemplateException, IOException;
+    abstract public void execute(DirectiveHandler handler) throws Exception;
 
 }

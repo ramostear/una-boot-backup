@@ -2,9 +2,7 @@ package com.ramostear.unaboot.domain.dto;
 
 import com.ramostear.unaboot.domain.dto.support.OutputConvert;
 import com.ramostear.unaboot.domain.entity.Post;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
@@ -14,6 +12,8 @@ import java.util.Date;
 @Data
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostMiniDTO implements OutputConvert<PostMiniDTO, Post> {
 
     private Integer id;

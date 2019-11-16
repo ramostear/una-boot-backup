@@ -3,6 +3,7 @@ package com.ramostear.unaboot.web.admin;
 import com.ramostear.unaboot.common.UnaConst;
 import com.ramostear.unaboot.common.exception.UnaException;
 import com.ramostear.unaboot.domain.entity.User;
+import com.ramostear.unaboot.service.UserService;
 import com.ramostear.unaboot.web.UnaController;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,8 @@ public class GuardController extends UnaController {
 
     private static final String MSG = "用户名或密码错误";
 
+    @Autowired
+    private UserService userService;
     /**
      * 进入后台控制面板
      * @param model
@@ -52,6 +56,13 @@ public class GuardController extends UnaController {
      */
     @GetMapping("/admin/login")
     public String login(){
+        User temp = userService.findByUsername("Administrator");
+        if(temp == null){
+            temp = new User();
+            temp.setUsername("Administrator");
+            temp.setPassword("unabootv587");
+            userService.create(temp);
+        }
         User user = (User) SecurityUtils.getSubject()
                 .getSession().getAttribute("profile");
         if(user != null){

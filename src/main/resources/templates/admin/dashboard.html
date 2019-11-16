@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>仪表盘 - 尤娜(UnaBoot)</title>
+</head>
+<body>
+<div class="header fixed-top">
+    <div class="container">
+        <div class="left">
+            <a href="${una}/admin/dashboard" class="logo"><img src="${una}/img/logo.png" class="img-fluid" style="height: 40px"></a>
+        </div>
+        <div class="middle">
+            <div class="inner">
+                <a href="${una}/admin/dashboard" class="current"><i class="fa fa-dashboard"></i> 主页</a>
+                <a href="${una}/admin/posts" ><i class="fa fa-edit"></i> 创作</a>
+                <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
+                <a href="${una}/admin/themes" ><i class="fa fa-gift"></i> 主题</a>
+                <a href="${una}/admin/general"><i class="fa fa-sliders"></i> 系统</a>
+            </div>
+        </div>
+        <div class="right">
+            <a href="/admin/logout" data-toggle="tooltip" data-placement="bottom" title="退出"><i class="fa fa-sign-out"></i></a>
+            <a href="javascript:void(0);" id="profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5 style="font-weight: bold;">仪表板</h5>
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title" style="font-weight: bold;">欢迎使用Una-Boot博客管理系统!</h3>
+                        <p class="mb-0 mt-1">下列是一些常用的功能链接</p>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <h5 class="mb-4">配置</h5>
+                                <a href="/admin/settings/general" class="btn btn-primary" style="padding: 10px 35px;">自定义网站</a>
+                                <h6 class="mt-2">或者,<a href="/admin/themes" style="color: #007bff">改变网站主题</a></h6>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="mb-4">创作</h5>
+                                <h6 class="mt-2"><i class="fa fa-edit"></i> <a href="/admin/posts/write" style="color: #007bff">开始创作新的文章</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-plus"></i> <a href="/admin/categories" style="color: #007bff">添加新页面</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-upload"></i> <a href="/admin/themes/install" style="color: #007bff">上传新主题</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-link"></i> <a href="/admin/links" style="color: #007bff">添加一个友情链接</a></h6>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="mb-4">其他</h5>
+                                <h6 class="mt-2"><i class="fa fa-cube"></i> <a href="/admin/settings/cdn" style="color: #007bff">CDN设置</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-database"></i> <a href="/admin/settings/druid" style="color: #007bff">数据源监控</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-graduation-cap"></i> <a href="/admin/themes/install" style="color: #007bff">了解更多详细信息</a></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">最近发表</h3>
+                    </div>
+                    <div class="box-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">热门内容</h3>
+                    </div>
+                    <div class="box-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="box box-default">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">归档列表</h3>
+                    </div>
+                    <div class="box-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/echarts.min.js" ></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script>
+    $(function(){
+        $("#profile").on("click",function(){
+            layer.open({
+                type:2,
+                title:"<i class='fa fa-users'> 管理员信息</i>",
+                shadeClose:false,
+                shade:0.5,
+                area:['50%','70%'],
+                content:"${una}/admin/profile",
+                resize:false,
+                anim:2,
+            });
+        });
+    });
+</script>
+</html>

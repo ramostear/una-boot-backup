@@ -71,7 +71,7 @@ public class UserServiceImpl extends UnaService<User,Integer> implements UserSer
         Assert.notNull(user.getUsername(),"User username must not be null.");
         Assert.notNull(user.getUsername(),"User password must not be null.");
 
-        setPassword(user,user.getPassword());
+        user.setPassword(new SimpleHash("MD5",user.getPassword(), ByteSource.Util.bytes(user.getUsername()),1024).toString());
         return super.create(user);
     }
 

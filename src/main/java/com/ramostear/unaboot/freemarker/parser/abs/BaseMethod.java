@@ -38,7 +38,7 @@ public abstract class BaseMethod extends ApplicationObjectSupport implements Tem
 
         String tagName = UnaConst.RENDER_TAG_PREFIX+StringUtils.uncapitalize(className);
 
-        log.debug("render tag name :[{}]",tagName);
+        log.info("render tag name :[{}]",tagName);
         freeMarkerConfigurer.getConfiguration()
                 .setSharedVariable(tagName,this.getApplicationContext().getBean(beanName));
     }

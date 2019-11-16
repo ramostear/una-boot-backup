@@ -1,11 +1,13 @@
 package com.ramostear.unaboot.web.admin;
 
+import com.ramostear.unaboot.common.UnaConst;
 import com.ramostear.unaboot.common.exception.UnaException;
 import com.ramostear.unaboot.domain.entity.Link;
 import com.ramostear.unaboot.domain.param.LinkParam;
 import com.ramostear.unaboot.service.LinkService;
 import com.ramostear.unaboot.web.UnaController;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("/admin/links")
+@RequiresRoles(value = {UnaConst.DEFAULT_ROLE_NAME})
 public class LinkController extends UnaController {
 
     @Autowired

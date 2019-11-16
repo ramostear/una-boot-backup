@@ -108,7 +108,7 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean filterFactoryBean = new ShiroFilterFactoryBean();
         filterFactoryBean.setSecurityManager(securityManager);
         Map<String,String> filterChainDefinition = new LinkedHashMap<>();
-        filterChainDefinition.put("/admin/logout","logout");
+        /*filterChainDefinition.put("/admin/logout","logout");*/
         filterChainDefinition.put("/admin/**","authc");
         filterFactoryBean.setLoginUrl("/admin/login");
         filterFactoryBean.setSuccessUrl("/admin/dashboard");

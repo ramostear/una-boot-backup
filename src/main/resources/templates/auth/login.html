@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>登录-尤娜(UnaBoot)</title>
+    <style type="text/css">
+        body{overflow: hidden;
+            background: url("${una}/img/black_dot.png") 0% 0% /14px 14px repeat;
+        }
+        .content{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .pro-info{
+            position: fixed;
+            top: 360px;
+            left: 120px;
+            width: 650px;
+            height: 120px;
+            color: #fff;
+        }
+        .pro-info .pro-img{
+            width: 260px;
+            height: 80px;
+        }
+        .pro-info p{
+            font-size: 32px;
+            text-shadow: rgba(255,255,255,0.3) -1px -1px 1px, rgba(255,255,255,.5) 15px 15px 4px;
+        }
+        .login-box{
+            position: fixed;
+            top: 200px;
+            right: 120px;
+            width: 360px;
+            z-index: 9999;
+        }
+        .login-box .box-header{
+            width: 360px;
+            height: 120px;
+            display: table-cell;
+            vertical-align: center;
+            text-align: center;
+        }
+        .login-box .login-img{
+            width: 120px;
+            height: 120px;
+        }
+    </style>
+</head>
+<body>
+<div class="nav-top fixed-top">
+    <div class="container">
+        <div class="logo-box">
+            <a href="#">
+                <img src="${una}/img/logo.svg" class="logo ">
+            </a>
+            <div class="pull-right">
+                <a href="#" class="link">index</a>
+                <a href="#" class="link ml-2" title="github"><i class="fa fa-github"></i></a>
+                <a href="#" class="link ml-2" title="gitee"><i class="fa fa-git"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="pro-info">
+            <img src="${una}/img/logo.png" class="pro-img">
+            <p class="mt-2">
+                Una(尤娜)，一个易于使用的Java博客系统 ,
+                基于Spring Boot v2.1.5-RELEASE版本进行构建.
+            </p>
+        </div>
+        <div class="login-box">
+            <div class="box box-solid p-4">
+                <div class="box-header">
+                    <img src="${una}/img/favicon.png" class="login-img">
+                </div>
+                <div class="box-body">
+                    <form action="${una}/admin/login" method="post">
+                        <div class="form-group mt-4">
+                            <input type="text" name="username" class="form-control" placeholder="username"/>
+                        </div>
+                        <div class="form-group mt-5">
+                            <input type="password" name="password" class="form-control" placeholder="password"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4 pt-2 pb-2 pl-5 pr-5">登录</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <canvas id="c" style="z-index: 9;opacity: 0.2;"></canvas>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/login-page.js"></script>
+<script>
+    <#if error??>
+    layer.alert("${error}",{title:'登录异常',icon:0});
+    </#if>
+</script>
+</html>

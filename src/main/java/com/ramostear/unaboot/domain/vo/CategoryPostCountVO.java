@@ -1,8 +1,6 @@
 package com.ramostear.unaboot.domain.vo;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Created by Ramostear on 2019/11/13 0013.
@@ -10,6 +8,8 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryPostCountVO {
 
     private Long postCount;

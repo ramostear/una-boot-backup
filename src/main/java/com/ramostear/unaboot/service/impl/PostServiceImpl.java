@@ -2,6 +2,7 @@ package com.ramostear.unaboot.service.impl;
 
 import com.ramostear.unaboot.common.util.DateUtils;
 import com.ramostear.unaboot.common.util.ServiceUtils;
+import com.ramostear.unaboot.domain.dto.PostMiniDTO;
 import com.ramostear.unaboot.domain.entity.*;
 import com.ramostear.unaboot.domain.param.PostQuery;
 import com.ramostear.unaboot.domain.vo.PostListVO;
@@ -148,6 +149,43 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         });
     }
 
+    @Override
+    public PostMiniDTO beforePost(Integer currentPostId, Integer categoryId) {
+        if(currentPostId == null || categoryId == null){
+            return null;
+        }
+        Object[] data = postRepository.beforePost(currentPostId,categoryId);
+        return convertTo(data);
+    }
+
+    @Override
+    public PostMiniDTO afterPost(Integer currentPostId, Integer categoryId) {
+        if(currentPostId == null || categoryId == null){
+            return null;
+        }
+        Object[] data = postRepository.afterPost(currentPostId,categoryId);
+        return convertTo(data);
+    }
+
+    @Override
+    public List<PostMiniDTO> associatePost(Integer postId, Integer size) {
+        Set<Integer> tagIdSet = postTagService.findAllTagIdByPostId(postId);
+        List<Post> postList = postRepository.associatePostByTags(new ArrayList<>(tagIdSet),size);
+        return convertTo(postList);
+    }
+
+    @Override
+    public List<PostMiniDTO> findNewestPost(Integer size) {
+        List<Post> postList = postRepository.findNewestPosts(size);
+        return convertTo(postList);
+    }
+
+    @Override
+    public List<PostMiniDTO> findHottestPost(Integer size) {
+        List<Post> postList = postRepository.findHottestPosts(size);
+        return convertTo(postList);
+    }
+
     /**
      * 创建多条件查询语句
      * @param postQuery     查询条件
@@ -221,4 +259,27 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         postVO.setCategoryId(categoryId);
         return postVO;
     }
+
+    private PostMiniDTO convertTo(Object[] data){
+        PostMiniDTO miniDTO = new PostMiniDTO();
+        if(data != null && data.length > 0){
+            Integer id = Integer.parseInt(data[0].toString());
+            String title = data[1].toString();
+            String slug = data[2].toString();
+            miniDTO.setId(id);
+            miniDTO.setTitle(title);
+            miniDTO.setSlug(slug);
+            return miniDTO;
+        }else{
+            return null;
+        }
+    }
+
+    private List<PostMiniDTO> convertTo(List<Post> postList){
+        return postList.stream().map(post->{
+            PostMiniDTO postMiniDTO = new PostMiniDTO().convertFrom(post);
+            return postMiniDTO;
+        }).collect(Collectors.toList());
+    }
+
 }
