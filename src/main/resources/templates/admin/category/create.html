@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>create category</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <style>
+        table tr td{
+            border:none !important;
+        }
+        .layui-layer-btn .layui-layer-btn0{
+            border-color: none;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="mt-3" id="category-form">
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">名称：</label>
+                    <input type="text" name="name" class="form-control col-7">
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Slug：</label>
+                    <input type="text" name="slug" class="form-control col-7">
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Root：</label>
+                    <input type="text" class="form-control col-7" name="parentName" value="${parent.name}" readonly>
+                    <input type="hidden" name="parentId" value="${parent.id}">
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Theme：</label>
+                    <select class="form-control col-7" name="template">
+                        <#if themes?? && themes?size gt 0>
+                            <#list themes as theme>
+                                <option value="${theme}">${theme}</option>
+                            </#list>
+                        </#if>
+                    </select>
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Sort：</label>
+                    <input type="number" min="0" class="form-control col-7" name="sortNum">
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">导航栏目：</label>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="nav1" name="allowNav" value="1" class="custom-control-input">
+                        <label class="custom-control-label" for="nav1">开启</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="nav2" name="allowNav" value="0" checked class="custom-control-input">
+                        <label class="custom-control-label" for="nav2">关闭</label>
+                    </div>
+                </div>
+                <hr/>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Keywords：</label>
+                    <textarea class="form-control col-7" name="keywords" rows="3" placeholder="栏目/分类关键词..."></textarea>
+                </div>
+                <div class="form-group form-inline">
+                    <label class="col-3 text-right">Description：</label>
+                    <textarea class="form-control col-7" name="description" rows="5" placeholder="栏目/分类描述信息..."></textarea>
+                </div>
+                <div class="form-group text-center">
+                    <button type="button" id="save" class="btn btn-primary btn-sm align-center"><i class="fa fa-save"></i> 保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $("#save").on("click",function(){
+            let data = $("#category-form").serializeJSON();
+            data = JSON.stringify(data);
+            layer.confirm("你确定提交该表单中的数据吗",{
+                btn:['确定','取消']
+            },function(){
+                let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                $.ajax({
+                    url:'${una}/admin/categories',
+                    type:'post',
+                    data:data,
+                    contentType:'application/json;charset=UTF-8',
+                    success:function(obj){
+                        layer.close(loading);
+                        layer.msg(obj.name,{time:1000});
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    },
+                    error:function(){
+                        layer.close(loading);
+                        layer.msg("Server Error!");
+                    }
+                })
+            })
+        });
+    });
+</script>
+</body>
+</html>

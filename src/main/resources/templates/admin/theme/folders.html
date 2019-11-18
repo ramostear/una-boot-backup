@@ -1,0 +1,260 @@
+<#include "/admin/common/page.ftl"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/js/zTree_v3/css/zTreeStyle/zTreeStyle.css" />
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>主题文件 - 尤娜(UnaBoot)</title>
+    <style>
+        .layui-layer-btn .layui-layer-btn0{
+            border-color: none;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body>
+<div class="header fixed-top">
+    <div class="container">
+        <div class="left">
+            <a href="${una}/admin/dashboard" class="logo"><img src="${una}/img/logo.png" class="img-fluid" style="height: 40px"></a>
+        </div>
+        <div class="middle">
+            <div class="inner">
+                <a href="${una}/admin/dashboard"><i class="fa fa-dashboard"></i> 主页</a>
+                <a href="${una}/admin/posts" ><i class="fa fa-edit"></i> 文章</a>
+                <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
+                <a href="${una}/admin/themes" class="current"><i class="fa fa-gift"></i> 主题</a>
+                <a href="${una}/admin/general"><i class="fa fa-sliders"></i> 系统</a>
+            </div>
+        </div>
+        <div class="right">
+            <a href="${una}/admin/profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item">www</li>
+                                <li class="breadcrumb-item"><a href="${una}/admin/themes">themes</a></li>
+                                <#if breadcrumbs?? && breadcrumbs?size gt 0>
+                                    <#list breadcrumbs as breadcrumb>
+                                        <li class="breadcrumb-item"><a href="${una}/admin/themes/folders?path=${breadcrumb.link}">${breadcrumb.name}</a></li>
+                                    </#list>
+                                </#if>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-hover">
+                            <thead class="bg-secondary text-white">
+                            <tr><th>名称</th><th>路径</th><th width="120">大小</th><th width="120">操作</th></tr>
+                            </thead>
+                            <tbody>
+                            <#if folders?? && folders?size gt 0>
+                                <#list folders as folder>
+                                    <tr>
+                                        <td>
+                                            <#if folder.folder == true>
+                                                <i class="fa fa-folder-open-o"></i>
+                                                <a href="${una}/admin/themes/folders?path=${folder.dir}">${folder.name}</a>
+                                            <#else>
+                                                <i class="fa fa-file-o"></i>
+                                                ${folder.name}
+                                            </#if>
+                                        </td>
+                                        <td>
+                                            <#if folder.folder == true>
+                                                <a href="${una}/admin/themes/folders?path=${folder.dir}">${folder.dir}</a>
+                                            <#else>
+                                                ${folder.dir}
+                                            </#if>
+                                        </td>
+                                        <td><#if folder.folder == true>-<#else>${folder.size} kb</#if></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <#if folder.folder == true>
+
+                                                    <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">新建
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item create_file" href="javascript:void(0);" data-src="${folder.dir}">文件</a>
+                                                            <a class="dropdown-item create_folder" href="javascript:void(0);" data-src="${folder.dir}">文件夹</a>
+                                                        </div>
+                                                    </button>
+                                                <#else>
+                                                    <button class="btn btn-sm btn-primary edit-file" data-name="${folder.name}" data-src="${folder.dir}"><i class="fa fa-edit"></i>编辑</button>
+                                                </#if>
+                                                <button class="btn btn-sm btn-dark delete-file" data-name="${folder.name}" data-src="${folder.dir}"><i class="fa fa-trash-o"></i>删除</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </#list>
+                            </#if>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/popper.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script>
+    $(function(){
+        $(".edit-file").on("click",function(){
+            let file_name = $(this).attr("data-name");
+            let file_path = $(this).attr("data-src");
+            console.log("file name:"+file_name+",file path:"+file_path);
+            let file_suffix = file_name.substring(file_name.lastIndexOf(".")).toLowerCase();
+            console.log(file_suffix);
+            if(file_suffix == ".png" ||file_suffix == ".jpg"||file_suffix == ".jpeg"||file_suffix == ".gif"||file_suffix == ".bmp"){
+                layer.open({
+                    type:2,
+                    title:"<i class='fa fa-eye'> 图片预览</i>",
+                    shadeClose:false,
+                    shade:0.7,
+                    offset:["100px"],
+                    area:['800px','500px'],
+                    content:"${una}/admin/themes/folders/img?path="+file_path,
+                    resize:false,
+                    anim:2,
+                });
+            }else{
+                layer.open({
+                    type:2,
+                    title:"<i class='fa fa-pencil'> 编辑[ "+file_path+" ]</i>",
+                    shadeClose:false,
+                    shade:0.4,
+                    area:['70%','800px'],
+                    content:"${una}/admin/themes/folders/reader?path="+file_path,
+                    resize:false,
+                    anim:2,
+                    maxmin:true,
+                    end:function(){
+                        location.reload();
+                    }
+                });
+            }
+        });
+
+        /**
+         * 创建新文件
+         */
+        $(".create_file").on("click",function() {
+            let root_dir = $(this).attr("data-src");
+            layer.prompt({title:'请输入文件名（例如：posts.html）',formType:0},function(fileName,index){
+                let file_suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+                if(file_suffix == ".png" ||file_suffix == ".jpg"||file_suffix == ".jpeg"||file_suffix == ".gif"||file_suffix == ".bmp"){
+                    layer.alert("不支持创建图像文件",{title:'ERROR',icon:0});
+                    return false;
+                }else{
+                    $.ajax({
+                        type:'POST',
+                        url:'${una}/admin/themes/folders/new?type=file',
+                        data:{
+                            path:root_dir+"/"+fileName
+                        },
+                        success:function() {
+                            layer.close(index);
+                            layer.confirm(fileName+"已经创建,是否进行编辑?",{
+                                btn:['立即编辑','稍后再说']
+                            },function(){
+                                //打开文件编辑框
+                                layer.open({
+                                    type:2,
+                                    title:"<i class='fa fa-pencil'> 编辑文件</i>",
+                                    shadeClose:false,
+                                    shade:0.4,
+                                    area:['70%','800px'],
+                                    content:"${una}/admin/themes/folders/reader?path="+root_dir+"/"+fileName,
+                                    resize:false,
+                                    anim:2,
+                                    maxmin:true,
+                                    end:function(){
+                                        location.reload();
+                                    }
+                                });
+                            },function(){
+                                location.reload();
+                                return false;
+                            });
+                        },
+                        error:function() {
+                            layer.close(index);
+                            layer.alert(fileName+"创建失败",{icon:0,title:'ERROR'});
+                        }
+                    });
+                }
+            })
+        });
+
+
+        $(".create_folder").on("click",function() {
+            let root_dir = $(this).attr("data-src");
+            layer.prompt({title:"请输入文件夹名称",formType:0},function(folderName,index){
+                $.ajax({
+                    type:'POST',
+                    url:'${una}/admin/themes/folders/new?type=folder',
+                    data:{
+                        path:root_dir+"/"+folderName
+                    },
+                    success:function(){
+                        layer.close(index);
+                        layer.alert(folderName+"文件夹已创建",{icon:1,title:'提示信息'},function(index) {
+                            layer.close(index);
+                            window.location.href = "${una}/admin/themes/folders?path="+root_dir;
+                        });
+                    }
+                })
+            });
+        });
+
+        $(".delete-file").on("click",function(){
+            let file_name = $(this).attr("data-name");
+            let file_path = $(this).attr("data-src");
+            layer.confirm("你确定要删除该文件吗？",{title:'系统提示',btn:['确认删除','取消']},function(){
+                let json = {path:file_path};
+                let loading = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+                $.ajax({
+                    type:'DELETE',
+                    url:'${una}/admin/themes/folders',
+                    contentType:"application/json",
+                    data:JSON.stringify(json),
+                    success:function(){
+                        layer.close(loading);
+                        layer.alert(file_name+"已经被删除",{title:'系统提示',icon:1},function(){
+                            window.location.reload();
+                        });
+                    }
+                });
+            },function(){
+                return false;
+            });
+        });
+    });
+</script>
+</html>

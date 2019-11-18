@@ -52,7 +52,7 @@ public class CategoryController extends UnaController {
     @ResponseBody
     @GetMapping("/tree")
     public List<CategoryVO> tree(){
-        return categoryService.tree(new Sort(Sort.Direction.ASC,"name"));
+        return categoryService.tree(new Sort(Sort.Direction.ASC,"sortNum"));
     }
 
     @ResponseBody

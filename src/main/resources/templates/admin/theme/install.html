@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>安装主题 - 尤娜(UnaBoot)</title>
+    <style>
+        .hidden{
+            display: none;
+        }
+        .layui-layer-btn .layui-layer-btn0{
+            border-color: none;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form class="form-horizontal" id="theme-form" enctype="multipart/form-data">
+                <div style="padding: 120px 15px 15px;overflow: auto;">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control file-name" id="show-name" placeholder="请选择.zip/.rar主题文件" onkeydown="return false;" onpause="return false;" type="text">
+                            <div class="input-group-btn ml-1">
+                                <button class="btn btn-secondary upload-btn" type="buttom" id="upload-btn">
+                                    <i class="fa fa-folder-open"></i>
+                                    <span>浏览...</span>
+                                    <input name="theme" class="upload-file-input" multiple="multiple" onchange="fileChange(this)" type="file" accept="application/zip">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="button" class="btn btn-danger hidden" id="install-theme"><i class="fa fa-cogs"></i> 安装</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.form.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script>
+    $(function(){
+        $("#install-theme").on("click",function(){
+            let loading = layer.load(2,{shade:[0.4,'#f0f0f0f0']});
+            $("#theme-form").ajaxSubmit({
+                type:'post',
+                url:'${una}/admin/themes/install',
+                success:function(){
+                    layer.close(loading);
+                    layer.alert("新主题已经成功安装",{
+                        title:'提示信息',
+                        icon:1
+                    },function () {
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                },
+                error:function(){
+                    layer.close(loading);
+                    layer.alert("新主题未能成功安装",{
+                        title:'提示信息',
+                        icon:3
+                    },function () {
+                        let index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                }
+            });
+        });
+    });
+    function fileChange(target){
+        let  isIe =  /msie/i.test(navigator.userAgent) && !window.opera;
+        let fileName = null;
+        if(isIe && !TARGET.files){
+            let filePath = target.value;
+            let fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            let file = fileSystem.GetFile(filePath);
+            fileName = file.name;
+        }else{
+            fileName = target.files[0].name;
+        }
+        $("#show-name").val(fileName);
+        $("#install-theme").removeClass("hidden");
+    }
+</script>
+</html>

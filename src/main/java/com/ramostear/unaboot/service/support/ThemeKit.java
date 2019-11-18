@@ -26,7 +26,7 @@ public class ThemeKit {
         String fileName = file.getOriginalFilename();
         int point_index = fileName.lastIndexOf(".");
         String ext_name = fileName.substring(point_index+1).toLowerCase();
-        if(!ext_name.equals("zip") || !ext_name.equals("rar")){
+        if(!ext_name.equals("zip") && !ext_name.equals("rar")){
             throw new Exception("主题文件格式不正确");
         }
         String theme_name = fileName.substring(0,point_index);

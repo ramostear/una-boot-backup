@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>${path} - 尤娜(UnaBoot)</title>
+    <style>
+        #editor_area{
+            height: 700px;
+            overflow: auto;
+        }
+        .layui-layer-btn .layui-layer-btn0{
+            border-color: none;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div id="editor_area" class="mt-2"></div>
+            <div class="text-center">
+                <button class="btn btn-sm btn-primary mt-2 save_file"><i class="fa fa-save"></i> 保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/ace/ace.js" ></script>
+<script type="text/javascript" src="${una}/js/ace/ext-language_tools.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script type="text/javascript">
+    String.prototype.endWith=function(str){
+        if(str==null||str==""||this.length==0||str.length>this.length)
+            return false;
+        if(this.substring(this.length-str.length)==str)
+            return true;
+        else
+            return false;
+        return true;
+    }
+    ace.require("ace/ext/language_tools");
+    ace.require("ace/ext/spellcheck");
+    ace.require("ace/ext/static_highlight");
+    ace.require("ace/ext/searchbox");
+    let editor = ace.edit("editor_area");
+    editor.setFontSize(18);
+    editor.session.setUseWrapMode(true);
+    editor.setHighlightActiveLine(true);
+    editor.setTheme("ace/theme/dracula");
+    /* editor.session.setMode("ace/mode/text");*/
+    initLanguage();
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+    $.ajax({
+        type:'POST',
+        url:'${una}/admin/themes/folders/reader?type=async',
+        data:{path:"${path}"},
+        success:function(content) {
+            editor.setValue(content);
+        },
+        error:function(){
+            layer.alert("加载文件异常",{title:'ERROR',icon:0});
+        }
+    });
+    $(".save_file").on("click",function(){
+        let content = editor.getValue();
+        let path = "${path}";
+        let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+        $.ajax({
+            type:'POST',
+            url:'${una}/admin/themes/folders/writer',
+            cache:false,
+            contentType:'application/x-www-form-urlencoded;charset=utf-8',
+            data:{
+                path:path,
+                text:content
+            },
+            success:function(){
+                layer.close(loading);
+                layer.alert("文件已经保存",{title:'提示信息',icon:1});
+            },
+            error:function() {
+                layer.close(loading);
+                layer.alert("服务器异常",{title:"ERROR",icon:0});
+            }
+        });
+    });
+
+    function initLanguage(){
+        let path = "${path}";
+        if(path.endWith(".js")){
+            editor.session.setMode("ace/mode/javascript");
+        }else if(path.endWith(".css")){
+            editor.session.setMode("ace/mode/css");
+        }else if(path.endWith(".html")){
+            editor.session.setMode("ace/mode/html");
+        }else if(path.endWith(".json")){
+            editor.session.setMode("ace/mode/json");
+        }else if(path.endWith(".yaml")){
+            editor.session.setMode("ace/mode/yaml");
+        }else if(path.endWith(".yml")){
+            editor.session.setMode("ace/mode/yaml");
+        }else if(path.endWith(".java")){
+            editor.session.setMode("ace/mode/java");
+        }else if(path.endWith(".markdown")){
+            editor.session.setMode("ace/mode/markdown");
+        }else if(path.endWith(".ftl")){
+            editor.session.setMode("ace/mode/ftl");
+        }else{
+            editor.session.setMode("ace/mode/text");
+        }
+    }
+</script>
+</html>
