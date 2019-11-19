@@ -7,6 +7,7 @@ import com.ramostear.unaboot.common.util.CDNUtils;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.web.UnaController;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import java.util.Set;
  * @ Date 2019/11/13 0013 3:18
  * @ Version 1.0
  **/
+@Slf4j
 @Controller
 @RequestMapping("/admin/settings")
 @RequiresRoles(value = {UnaConst.DEFAULT_ROLE_NAME})
@@ -88,7 +90,10 @@ public class SettingController extends UnaController {
             settingService.update(items);
             Map<String,Setting> settings =settingService.convertToMap();
             Set<String> keySet = settings.keySet();
-            keySet.forEach(key->servletContext.setAttribute(key,settings.get(key).getValue()));
+            keySet.forEach(key->{
+                log.info("general setting key:[{}], value:[{}]",key,settings.get(key).getValue());
+                servletContext.setAttribute(key,settings.get(key).getValue());
+            });
             return ok();
         }catch (UnaException ex){
             return badRequest();
