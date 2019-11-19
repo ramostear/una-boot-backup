@@ -30,9 +30,9 @@ public class QiniuFactory extends CDNFactory {
             prop.load(inputStream);
             qiniu.setEnable(prop.getProperty("qiniu.enable","false").equals("true"));
             qiniu.setAccessKey(prop.getProperty("qiniu.accessKey",""));
-            qiniu.setAccessKey(prop.getProperty("qiniu.secretKey",""));
-            qiniu.setAccessKey(prop.getProperty("qiniu.bucket",""));
-            qiniu.setAccessKey(prop.getProperty("qiniu.domain",""));
+            qiniu.setSecretKey(prop.getProperty("qiniu.secretKey",""));
+            qiniu.setBucket(prop.getProperty("qiniu.bucket",""));
+            qiniu.setDomain(prop.getProperty("qiniu.domain",""));
             return qiniu;
         }catch (FileNotFoundException ex){
             log.error("cdn config file can not found");
