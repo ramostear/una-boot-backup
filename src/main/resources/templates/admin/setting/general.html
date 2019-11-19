@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>常规配置 - 尤娜(UnaBoot)</title>
+    <style>
+        .table thead th{
+            border-bottom: 1px solid #dee2e6 !important;
+            border-top: 0 !important;
+        }
+        .table td{
+            border-top: 1px solid #dee2e6 !important;
+        }
+        .table a.current{
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="header fixed-top">
+    <div class="container">
+        <div class="left">
+            <a href="${una}/admin/dashboard" class="logo"><img src="${una}/img/logo.png" class="img-fluid" style="height: 40px"></a>
+        </div>
+        <div class="middle">
+            <div class="inner">
+                <a href="${una}/admin/dashboard"><i class="fa fa-dashboard"></i> 主页</a>
+                <a href="${una}/admin/posts" ><i class="fa fa-edit"></i> 文章</a>
+                <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
+                <a href="${una}/admin/themes" ><i class="fa fa-gift"></i> 主题</a>
+                <a href="${una}/admin/general" class="current"><i class="fa fa-sliders"></i> 系统</a>
+            </div>
+        </div>
+        <div class="right">
+            <a href="${una}/admin/profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="nav-link active" role="tab"  href="${una}/admin/settings/general"><i class="fa fa-wrench"></i> 常规设置</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${una}/admin/cdn" data-toggle="pill" role="tab" aria-controls="cdn"><i class="fa fa-rocket"></i> CDN设置</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${una}/admin/logs" role="tab" aria-controls="log"><i class="fa fa-files-o"></i> 系统日志</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${una}/admin/sql" data-toggle="pill" role="tab" aria-controls="sql"><i class="fa fa-database"></i> SQL监控</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#link" data-toggle="pill" role="tab" aria-controls="link"><i class="fa fa-link"></i> 友链设置</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box-body">
+                        <div class="tab-content">
+                            <div class="tab-pane show fade active" id="general" role="tabpanel" aria-labelledby="general">
+                                <input type="file" id="logo-file" onchange="selectFile(this,'blog_logo')" style="display: none;" accept="image/*"/>
+                                <input type="file" id="favicon-file" onchange="selectFile(this,'blog_favicon')" style="display: none;" accept="image/*"/>
+                                <form id="general-form">
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">博客名称:</span>
+                                        <input class="form-control col-5" name="blog_name" value="${general['blog_name'].value}" placeholder="博客名称...">
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">网站域名:</span>
+                                        <input class="form-control col-5" name="blog_url" placeholder="博客地址..." value="${general['blog_url'].value}">
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">网站Logo:</span>
+                                        <div class="col-5 pl-0 pr-0">
+                                            <img src="${general['blog_logo'].value}" class="img-fluid blog_logo" style="max-height: 90px"/><br>
+                                            <input type="hidden" class="form-control" placeholder="博客logo..." name="blog_logo" value="${general['blog_logo'].value}">
+                                            <button type="button" class="btn btn-outline-dark btn-sm mt-2" onclick="document.getElementById('logo-file').click()">
+                                                <i class="fa fa-upload">选择logo</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">ICO图标:</span>
+                                        <div class="col-5 pl-0 pr-0">
+                                            <img src="${general['blog_favicon'].value}" class="img-fluid blog_favicon" style="width: 64px;64px"/><br>
+                                            <input type="hidden" class="form-control" name="blog_favicon" placeholder="favicon.ico..." value="${general['blog_favicon'].value}">
+                                            <button type="button" class="btn btn-outline-dark btn-sm mt-2" onclick="document.getElementById('favicon-file').click()">
+                                                <i class="fa fa-upload">选择ico</i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">ICP备:</span>
+                                        <input class="form-control col-5" name="blog_icp" placeholder="ICP备案号..." value="${general['blog_icp'].value}">
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">网安备:</span>
+                                        <input class="form-control col-5" name="blog_npp" placeholder="互联网安全备案号..." value="${general['blog_npp'].value}">
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">联系邮箱:</span>
+                                        <div class="col-5 input-group pl-0 pr-0">
+                                            <input type="text" class="form-control" name="blog_email" placeholder="email@unaboot.com" value="${general['blog_email'].value}">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fa fa-envelope"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">版权信息:</span>
+                                        <div class="col-5 input-group pl-0 pr-0">
+                                            <input type="text" class="form-control" name="blog_copyright" placeholder="&copy; 2019 ramostear" value="${general['blog_copyright'].value}">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text"><i class="fa fa-copyright"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">博客公告:</span>
+                                        <textarea class="form-control col-5" rows="5" name="blog_notice">${general['blog_notice'].value}</textarea>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <button class="btn btn-primary" type="button" id="submit-form"><i class="fa fa-save"></i> 提交</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script>
+    $(function(){
+        $("#submit-form").on("click",function(){
+            let data = $("#general-form").serialize();
+            layer.confirm("你确定修改此表单的数据项吗?",{
+                btn:['确定','取消']
+            },function(){
+                let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+                $.ajax({
+                    type:'post',
+                    url:'${una}/admin/settings/general',
+                    data:data,
+                    success:function(){
+                        layer.close(loading);
+                        layer.msg("站点配置信息已更新",{time:1000});
+                    },
+                    error:function(){
+                        layer.close(loading);
+                        layer.msg("服务器异常",{time:1000});
+                    }
+                });
+            })
+        });
+    });
+    function selectFile(element,fieldName){
+        try{
+            let file = element.files[0];
+            let reader = new FileReader();
+            let fileName = "";
+            if(typeof (fileName) != "undefined"){
+                fileName = $(element).val().split("\\").pop();
+            }
+            reader.onload = function(){
+                let img = new Image();
+                img.src = reader.result;
+                img.onload = function(){
+                    let w = img.width,h=img.height;
+                    let canvas = document.createElement("canvas");
+                    let ctx = canvas.getContext("2d");
+                    $(canvas).attr({width:w,height:h});
+                    ctx.drawImage(img,0,0,w,h);
+                    let base64 = canvas.toDataURL("image/png",0.5);
+                    let result = {
+                        url:window.URL.createObjectURL(file),
+                        base64:base64,
+                        clearBase64:base64.substr(base64.indexOf(',')+1),
+                        suffix:base64.substring(base64.indexOf(',')+1,base64.indexOf(';'))
+                    };
+                    $("input[name="+fieldName+"]").val(result.base64);
+                    $("img."+fieldName).attr("src",result.base64);
+                    $("input[name="+fieldName+"]").attr("readOnly",true);
+                    layer.msg("已选择文件:"+fileName);
+                }
+            }
+            reader.readAsDataURL(element.files[0]);
+        }catch (e) {
+            layer.msg("error");
+        }
+    }
+</script>
+</html>
