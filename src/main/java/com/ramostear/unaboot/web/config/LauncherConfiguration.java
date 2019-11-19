@@ -34,7 +34,7 @@ public class LauncherConfiguration implements ApplicationRunner, Ordered, Servle
 
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         Map<String, Setting> settingMap = settingService.convertToMap();
         ExecutorService executorService = new ThreadPoolExecutor(1,1,0,
                 TimeUnit.SECONDS,new ArrayBlockingQueue<>(1),
@@ -43,7 +43,7 @@ public class LauncherConfiguration implements ApplicationRunner, Ordered, Servle
             Set<String> keySet = settingMap.keySet();
             keySet.forEach((String key)->{
                 servletContext.setAttribute(key,settingMap.get(key).getValue());
-                log.debug("general setting key:[{}], value:[{}]",key,settingMap.get(key).getValue());
+                log.info("general setting key:[{}], value:[{}]",key,settingMap.get(key).getValue());
             });
         });
         executorService.shutdown();
