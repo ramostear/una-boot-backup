@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="box box-solid mb-0">
+                <div class="box-body">
+                    <div class="tag-wrap-head pb-2">
+                        <form class="mt-3" id="link-form">
+                            <div class="form-group form-inline">
+                                <label class="col-3 text-right">名称：</label>
+                                <input type="text" name="name" value="${link.name}" class="form-control col-7">
+                            </div>
+                            <div class="form-group form-inline">
+                                <label class="col-3 text-right">链接：</label>
+                                <input type="url" name="url" value="${link.url}" class="form-control col-7">
+                            </div>
+                            <div class="form-group form-inline">
+                                <label class="col-3 text-right">排序号：</label>
+                                <input type="number" name="sortNum" value="${link.sortNum}" class="form-control col-7">
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="button" id="save" class="btn btn-primary btn-sm align-center"><i class="fa fa-save"></i> 保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript">
+    $("#save").on("click",function(){
+        var data = $("#link-form").serializeJSON();
+        data = JSON.stringify(data);
+        layer.confirm("你确定保存该链接吗？",{
+            btn:['确定','取消']
+        },function(){
+            let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+            $.ajax({
+                type:'PUT',
+                url:'${una}/admin/links/${link.id}',
+                data:data,
+                contentType:'application/json;charset=UTF-8',
+                success:function(){
+                    layer.close(loading);
+                    layer.alert("链接已更新",{title:'提示信息',icon:1},function(){
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    });
+                },
+                error:function(){
+                    layer.close(loading);
+                    layer.alert("服务器异常",{title:'提示信息',icon:0});
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

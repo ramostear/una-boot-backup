@@ -49,7 +49,7 @@ public class LinkController extends UnaController {
 
     @PostMapping("/write")
     @ResponseBody
-    public ResponseEntity<Object> write(@Valid @RequestBody LinkParam linkParam, BindingResult bindingResult){
+    public ResponseEntity<Object> write(@RequestBody @Valid LinkParam linkParam, BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()){
             return badRequest("你提交的数据未通过校验");
         }
