@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link href="${una_gitalkCssHref()}">
 </head>
 <body>
-
+    <div id="talk-content" style="width: 50%"></div>
+    <script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+    <script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+    <script  src="${una_gitalkJsSrc()}"></script>
+    <script type="text/javascript">
+        ${una_gitalk(1,"talk-content")}
+    </script>
 </body>
 </html>
