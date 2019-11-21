@@ -28,4 +28,6 @@ public class PostMiniDTO implements OutputConvert<PostMiniDTO, Post> {
 
     private Date updateTime;
 
+    private Long visits;
+
 }

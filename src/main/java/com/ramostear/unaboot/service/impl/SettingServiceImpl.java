@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.service.impl;
 
+import com.ramostear.unaboot.domain.dto.GitalkDTO;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.repository.SettingRepository;
 import com.ramostear.unaboot.service.SettingService;
@@ -66,5 +67,45 @@ public class SettingServiceImpl extends UnaService<Setting,Integer> implements S
     public String getValue(String key) {
         Setting setting = settingRepository.findByKey(key);
         return setting != null?setting.getValue():"";
+    }
+
+    @Override
+    public GitalkDTO getGitalk() {
+        GitalkDTO gitalk = new GitalkDTO();
+        Map<String,Setting> settingMap = this.convertToMap();
+        if(CollectionUtils.isEmpty(settingMap)){
+            return gitalk;
+        }
+        if(settingMap.get("gitalk_enable") == null){
+            gitalk.setEnable(0);
+        }else{
+            gitalk.setEnable(Integer.parseInt(settingMap.get("gitalk_enable").getValue()));
+        }
+        if(settingMap.get("gitalk_client_id") == null){
+            gitalk.setClientId("");
+        }else{
+            gitalk.setClientId(settingMap.get("gitalk_client_id").getValue());
+        }
+        if(settingMap.get("gitalk_client_secret") == null){
+            gitalk.setClientSecret("");
+        }else{
+            gitalk.setClientSecret(settingMap.get("gitalk_client_secret").getValue());
+        }
+        if(settingMap.get("gitalk_repo") == null){
+            gitalk.setRepo("");
+        }else{
+            gitalk.setRepo(settingMap.get("gitalk_repo").getValue());
+        }
+        if(settingMap.get("gitalk_owner") == null){
+            gitalk.setOwner("");
+        }else{
+            gitalk.setOwner(settingMap.get("gitalk_owner").getValue());
+        }
+        if(settingMap.get("gitalk_admin") == null){
+            gitalk.setAdmin("");
+        }else{
+            gitalk.setAdmin(settingMap.get("gitalk_admin").getValue());
+        }
+        return gitalk;
     }
 }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${una}/css/ionicons.css" />
     <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
     <link rel="stylesheet" href="${una}/css/blog-boot.css" />
-    <title>CDN配置 - 尤娜(UnaBoot)</title>
+    <title>评论配置 - 尤娜(UnaBoot)</title>
     <style>
         .table thead th{
             border-bottom: 1px solid #dee2e6 !important;
@@ -20,10 +20,6 @@
         }
         .table a.current{
             color: #007bff;
-        }
-        .layui-layer-btn .layui-layer-btn0{
-            border-color: none;
-            color:#fff !important;
         }
     </style>
 </head>
@@ -57,10 +53,10 @@
                     <div class="box-header with-border">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link" href="${una}/admin/settings/general"><i class="fa fa-wrench"></i> 常规设置</a>
+                                <a class="nav-link"   href="${una}/admin/settings/general"><i class="fa fa-wrench"></i> 常规设置</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" role="tab" href="${una}/admin/settings/cdn"><i class="fa fa-rocket"></i> CDN设置</a>
+                                <a class="nav-link" href="${una}/admin/settings/cdn"><i class="fa fa-rocket"></i> CDN设置</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${una}/admin/settings/druid"><i class="fa fa-database"></i> SQL监控</a>
@@ -69,43 +65,47 @@
                                 <a class="nav-link" href="${una}/admin/links"><i class="fa fa-link"></i> 友链设置</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${una}/admin/settings/talk"><i class="fa fa-comments-o"></i> Gitalk设置</a>
+                                <a class="nav-link active" role="tab" href="${una}/admin/settings/talk"><i class="fa fa-comments-o"></i> Gitalk设置</a>
                             </li>
                         </ul>
                     </div>
                     <div class="box-body">
                         <div class="tab-content">
-                            <div class="tab-pane show fade active" id="cdn" role="tabpanel" aria-labelledby="cdn">
-                                <form id="cdn-form" action="#" method="post">
+                            <div class="tab-pane show fade active" id="talk" role="tabpanel" aria-labelledby="talk">
+                                <form id="gitalk-form">
                                     <div class="form-group form-inline">
-                                        <span class="col-3 text-right">开启CND存储(七牛云)：</span>
+                                        <span class="col-3 text-right">开启Gitalk：</span>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="enable-open" name="enable" value="1" <#if cdn.enable == true> checked</#if> class="custom-control-input">
+                                            <input type="radio" id="enable-open" name="gitalk_enable" value="1" <#if gitalk.enable == 1> checked</#if> class="custom-control-input">
                                             <label class="custom-control-label" for="enable-open">开启</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="enable-close" name="enable" value="0" <#if cdn.enable == false> checked</#if> class="custom-control-input">
+                                            <input type="radio" id="enable-close" name="gitalk_enable" value="0" <#if gitalk.enable == 0> checked</#if> class="custom-control-input">
                                             <label class="custom-control-label" for="enable-close">关闭</label>
                                         </div>
                                     </div>
                                     <div class="form-group form-inline">
-                                        <span class="col-3 text-right">AccessKey：</span>
-                                        <input class="form-control col-5" name="accessKey" value="${cdn.accessKey}" placeholder="accessKey...">
+                                        <span class="col-3 text-right">clientId:</span>
+                                        <input class="form-control col-5" name="gitalk_client_id" value="${gitalk.clientId}" placeholder="clientId">
                                     </div>
                                     <div class="form-group form-inline">
-                                        <span class="col-3 text-right">SecretKey：</span>
-                                        <input class="form-control col-5" name="secretKey" value="${cdn.secretKey}" placeholder="secretKey...">
+                                        <span class="col-3 text-right">clientSecret:</span>
+                                        <input class="form-control col-5" name="gitalk_client_secret" placeholder="clientSecret" value="${gitalk.clientSecret}">
                                     </div>
                                     <div class="form-group form-inline">
-                                        <span class="col-3 text-right">Bucket：</span>
-                                        <input class="form-control col-5" name="bucket" value="${cdn.bucket}" placeholder="bucket...">
+                                        <span class="col-3 text-right">repo:</span>
+                                        <input class="form-control col-5" name="gitalk_repo" placeholder="repo" value="${gitalk.repo}">
                                     </div>
                                     <div class="form-group form-inline">
-                                        <span class="col-3 text-right">Domain：</span>
-                                        <input class="form-control col-5" name="domain" value="${cdn.domain}" placeholder="domain...">
+                                        <span class="col-3 text-right">owner:</span>
+                                        <input class="form-control col-5" name="gitalk_owner" placeholder="owner" value="${gitalk.owner}">
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <span class="col-3 text-right">admin:</span>
+                                        <input class="form-control col-5" name="gitalk_admin" placeholder="admin" value="${gitalk.admin}">
                                     </div>
                                     <div class="form-group text-center">
-                                        <button class="btn btn-primary submit-btn" type="button"><i class="fa fa-save"></i> 提交</button>
+                                        <button class="btn btn-primary" type="button" id="submit-form"><i class="fa fa-save"></i> 提交</button>
                                     </div>
                                 </form>
                             </div>
@@ -122,32 +122,30 @@
 </body>
 
 <script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
-<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
 <script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
 <script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
 <script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
 <script>
     $(function(){
-        $(".submit-btn").on("click",function(){
-            var data = $("#cdn-form").serialize();
-            layer.confirm("你确定需要更新CND的配置参数吗",{
+        $("#submit-form").on("click",function(){
+            let data = $("#gitalk-form").serialize();
+            layer.confirm("你确定修改此表单的数据项吗?",{
                 btn:['确定','取消'],
                 offset:['150px']
             },function(){
                 let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
                 $.ajax({
                     type:'post',
-                    url:'${una}/admin/settings/cdn',
+                    url:'${una}/admin/settings/talk',
                     data:data,
                     success:function(){
                         layer.close(loading);
-                        layer.alert("CDN配置已经更新",{title:'提示信息',icon:1,offset:['150px']},function(){
-                            window.location.reload();
-                        });
+                        layer.msg("评论配置信息已经更新",{time:1000});
                     },
                     error:function(){
                         layer.close(loading);
-                        layer.alert("服务器异常",{title:'提示信息',icon:0,offset:['150px']});
+                        layer.msg("服务器异常",{time:1000});
                     }
                 });
             })

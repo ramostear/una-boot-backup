@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +68,7 @@ public class TagController extends UnaController {
             tag.setName(name);
             tag.setSlug(slug);
             tagService.createBy(tag);
-            return ok();
+            return new ResponseEntity<>(tag, HttpStatus.OK);
         }catch (UnaException ex){
             log.warn("create tag error:[{}]",ex.getMessage());
             return badRequest();

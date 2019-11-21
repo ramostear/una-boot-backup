@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.service;
 
+import com.ramostear.unaboot.domain.dto.GitalkDTO;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.service.support.IUnaService;
 import org.springframework.lang.NonNull;
@@ -15,4 +16,6 @@ public interface SettingService extends IUnaService<Setting,Integer> {
 
     @NonNull
     String getValue(@NonNull String key);
+
+    GitalkDTO getGitalk();
 }

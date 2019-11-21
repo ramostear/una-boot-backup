@@ -20,13 +20,13 @@ public class TimeAgo extends BaseMethod {
     private static final long ONE_DAY = 86400000L;
     private static final long ONE_WEEK = 604800000L;
 
-    private static final String ONE_SECOND_AGO = " seconds ago";
-    private static final String ONE_MINUTE_AGO = " minutes ago";
-    private static final String ONE_HOUR_AGO = " hours ago";
-    private static final String ONE_DAY_AGO = " days ago";
-    private static final String ONE_MONTH_AGO = " months ago";
-    private static final String ONE_YEAR_AGO = " years ago";
-    private static final String ONE_UNKNOWN = " unknown";
+    private static final String ONE_SECOND_AGO = " 秒以前";
+    private static final String ONE_MINUTE_AGO = " 分钟以前";
+    private static final String ONE_HOUR_AGO = " 小时以前";
+    private static final String ONE_DAY_AGO = " 天以前";
+    private static final String ONE_MONTH_AGO = " 月以前";
+    private static final String ONE_YEAR_AGO = " 年以前";
+    private static final String ONE_UNKNOWN = " 很久以前";
 
     @Override
     public Object exec(List arguments) throws TemplateModelException {

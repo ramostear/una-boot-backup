@@ -10,6 +10,32 @@
     <link rel="stylesheet" href="${una}/css/ionicons.css" />
     <link rel="stylesheet" href="${una}/css/blog-boot.css" />
     <title>仪表盘 - 尤娜(UnaBoot)</title>
+    <style>
+        ul.data-list{
+            padding-left:5px;
+        }
+        ul.data-list li{
+            list-style: none;
+            padding: 5px 0px;
+        }
+        ul.data-list li a{
+            display: inline-block;
+            width: 248px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: #007bff;
+        }
+        .talk{
+            height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .talk li{
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
 <div class="header fixed-top">
@@ -37,7 +63,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h5 style="font-weight: bold;">仪表板</h5>
+                <h5 style="font-weight: bold;text-shadow: 0px -5px 5px #d2d6de;">仪表板</h5>
                 <div class="box box-default">
                     <div class="box-header with-border">
                         <h3 class="box-title" style="font-weight: bold;">欢迎使用Una-Boot博客管理系统!</h3>
@@ -61,7 +87,7 @@
                                 <h5 class="mb-4">其他</h5>
                                 <h6 class="mt-2"><i class="fa fa-cube"></i> <a href="/admin/settings/cdn" style="color: #007bff">CDN设置</a></h6>
                                 <h6 class="mt-3"><i class="fa fa-database"></i> <a href="/admin/settings/druid" style="color: #007bff">数据源监控</a></h6>
-                                <h6 class="mt-3"><i class="fa fa-graduation-cap"></i> <a href="/admin/themes/install" style="color: #007bff">了解更多详细信息</a></h6>
+                                <h6 class="mt-3"><i class="fa fa-graduation-cap"></i> <a href="javascript:void(0);" style="color: #007bff">了解更多详细信息</a></h6>
                             </div>
                         </div>
                     </div>
@@ -76,7 +102,18 @@
                         <h3 class="box-title">最近发表</h3>
                     </div>
                     <div class="box-body">
-
+                        <ul class="data-list">
+                            <@una_newest size=10>
+                                <#if results?? && results?size gt 0>
+                                    <#list results as post>
+                                        <li>
+                                            <a href="${una}/post/${post.slug}" target="_blank" title="${post.title}">${post.title}</a>
+                                            <span class="pull-right text-muted"><i class="fa fa-calendar-minus-o"></i> ${una_timeAgo(post.createTime)}</span>
+                                        </li>
+                                    </#list>
+                                </#if>
+                            </@una_newest>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -86,17 +123,44 @@
                         <h3 class="box-title">热门内容</h3>
                     </div>
                     <div class="box-body">
-
+                        <ul class="data-list ">
+                            <@una_hottest size=10>
+                                <#if results?? && results?size gt 0>
+                                    <#list results as post>
+                                        <li>
+                                            <a href="${una}/post/${post.slug}" target="_blank" title="${post.title}">${post.title}</a>
+                                            <span class="pull-right text-muted pr-1"><i class="fa fa-eye"></i> ${una_numFormat(post.visits)}</span>
+                                        </li>
+                                    </#list>
+                                </#if>
+                            </@una_hottest>
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="box-title">归档列表</h3>
+                        <h3 class="box-title">最新评论</h3>
                     </div>
                     <div class="box-body">
-
+                        <ul class="data-list talk">
+                            <@una_newest_talk>
+                                <#if results?? && results?size gt 0>
+                                    <#list results as talk>
+                                        <li>
+                                            <span class="text-muted mb-1">${talk.body}</span><br>
+                                            <span class="text-primary pr-1">
+                                                <a href="${talk.htmlUrl}" target="_blank">
+                                                    <img src="${talk.avatarUrl}" class="img-fluid" style="width: 20px;border-radius: 50%">&nbsp;${talk.login}
+                                                </a>
+                                            </span>
+                                            <span class="text-muted pull-right"><i class="fa fa-calendar-minus-o"></i>${una_timeAgo(talk.createAt)}</span>
+                                        </li>
+                                    </#list>
+                                </#if>
+                            </@una_newest_talk>
+                        </ul>
                     </div>
                 </div>
             </div>

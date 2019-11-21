@@ -4,6 +4,7 @@ import com.ramostear.unaboot.common.UnaConst;
 import com.ramostear.unaboot.common.exception.UnaException;
 import com.ramostear.unaboot.common.factory.support.Qiniu;
 import com.ramostear.unaboot.common.util.CDNUtils;
+import com.ramostear.unaboot.domain.dto.GitalkDTO;
 import com.ramostear.unaboot.domain.entity.Setting;
 import com.ramostear.unaboot.service.SettingService;
 import com.ramostear.unaboot.web.UnaController;
@@ -58,6 +59,19 @@ public class SettingController extends UnaController {
         return updateSetting(request);
     }
 
+
+    @GetMapping("/talk")
+    public String gitalk(Model model){
+        model.addAttribute("gitalk",settingService.getGitalk());
+        return "/admin/setting/talk";
+    }
+
+    @ResponseBody
+    @PostMapping("/talk")
+    public ResponseEntity<Object> gitalk(HttpServletRequest request){
+        return updateSetting(request);
+    }
+
     @GetMapping("/cdn")
     public String cdn(Model model){
         model.addAttribute("cdn", CDNUtils.getQiniu());
@@ -99,5 +113,4 @@ public class SettingController extends UnaController {
             return badRequest();
         }
     }
-
 }

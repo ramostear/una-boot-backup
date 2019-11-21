@@ -185,7 +185,7 @@ public class PostController extends UnaController {
      * @return      String
      */
     private String generalSlug(){
-        return new SimpleDateFormat("yyyy/mm/dd")
+        return new SimpleDateFormat("yyyy/MM/dd")
                 .format(DateUtils.now())
                 +"/"
                 + RandomUtils.next(8)
