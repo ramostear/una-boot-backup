@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0">
+            <div class="box box-solid mb-0">
+                <div class="box-body">
+                    <div class="tag-wrap-head pb-2">
+                        <form class="form-row form-inline">
+                            <input class="form-control mr-2 ml-1" name="name" placeholder="标签名称">
+                            <input class="form-control mr-2" name="slug" placeholder="标签别名(英文)">
+                            <button type="button" class="btn btn-primary submit-btn"><i class="fa fa-plus"></i>新增</button>
+                        </form>
+                    </div>
+                    <div class="tag-wrap-box mt-2">
+                        <div class="tag-list-title">
+                            <p class="mb-0">系统标签列表</p>
+                        </div>
+                        <div class="tag-list-body">
+                            <#if tags?? && tags?size gt 0>
+                                <#list tags as tag>
+                                    <span class="tag-item" data-id="${tag.id}">${tag.name}</span>
+                                </#list>
+                            </#if>
+                        </div>
+                        <div class="tag-list-footer">
+                            已选：
+                            <div class="selected-tags">
+                                <#if selectedTags?? && selectedTags?size gt 0>
+                                    <#list selectedTags as tag>
+                                        <span class="tag-item" data-id="${tag.id}">${tag.name}</span>
+                                    </#list>
+                                </#if>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary mt-4 pull-right ok-btn">确定</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript">
+    $(".tag-list-body").on("click",".tag-item",function(){
+        var tagNumber = $(".selected-tags").children(".tag-item").length;
+        if(tagNumber > 2){
+            return;
+        }else{
+            var tagName = $(this).html();
+            var tagId = $(this).attr("data-id");
+            $(".tag-list-footer").find(".selected-tags").append("<span class='tag-item' data-id='"+tagId+"'>"+tagName+"</span>");
+            $(this).remove();
+        }
+    });
+    $(".selected-tags").on("click",".tag-item",function(){
+        var tagName = $(this).text();
+        var tagId = $(this).attr("data-id");
+        $(".tag-list-body").append("<span class='tag-item' data-id='"+tagId+"'>"+tagName+"</span>");
+        $(this).remove();
+    });
+    $(".submit-btn").on("click",function(){
+        var name = $("input[name=name]").val();
+        var slug = $("input[name=slug]").val();
+        if(name != null && name!="" && slug != null && slug!=""){
+            $.ajax({
+                type:'POST',
+                url:"${una}/admin/tags",
+                data:{
+                    name:name,
+                    slug:slug
+                },
+                success:function(tag){
+                    console.log(tag);
+                    layer.alert("标签添加成功",{title:'系统提示',icon:1},function(index){
+                        $("input[name=name]").val("");
+                        $("input[name=slug]").val("");
+                        $(".tag-list-body").append("<span class='tag-item' data-id='"+tag.id+"'>"+name+"</span>");
+                        layer.close(index);
+                    });
+                },
+                error:function(){
+                    layer.msg("服务器错误",{icon:0});
+                }
+            })
+        }else{
+            layer.msg("请填写标签信息后再添加",{icon:0});
+            return false;
+        }
+    });
+    $(".ok-btn").on("click",function(){
+        var tagIds = "";
+        $.each($(".selected-tags").find("span"),function(){
+            tagIds+=$(this).attr("data-id")+",";
+        });
+        tagIds = tagIds.substring(0,tagIds.length-1);
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.$("#tagIds").val(tagIds);
+        parent.layer.close(index);
+    });
+</script>
+</body>
+</html>

@@ -56,7 +56,7 @@ public class TagController extends UnaController {
             model.addAttribute("tags",tagService.listAll())
                     .addAttribute("selectedTags",null);
         }
-        return "/admin/tag/tags";
+        return "/admin/tag/index";
     }
 
     @PostMapping

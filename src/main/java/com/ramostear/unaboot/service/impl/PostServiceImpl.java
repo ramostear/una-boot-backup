@@ -186,6 +186,18 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         return convertTo(postList);
     }
 
+    @Override
+    public Post removeById(Integer postId) {
+        Assert.notNull(postId,"post id must not be null");
+        log.debug("removing post:{}",postId);
+        List<PostTag> postTagList = postTagService.removeByPostId(postId);
+        log.debug("removed post tags:[{}]",postTagList);
+
+        List<PostCategory> postCategories = postCategoryService.removeByPostId(postId);
+        log.debug("removed post category:[{}]",postCategories);
+        return super.removeById(postId);
+    }
+
     /**
      * 创建多条件查询语句
      * @param postQuery     查询条件

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/editormd/css/editormd.min.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <title>写文章-尤娜(UnaBoot)</title>
+</head>
+<body>
+<div class="header fixed-top">
+    <div class="container">
+        <div class="left">
+            <a href="${una}/admin/dashboard" class="logo"><img src="${blog_logo!'${una}/img/logo.png'}" class="img-fluid" style="height: 40px"></a>
+        </div>
+        <div class="middle">
+            <div class="inner">
+                <a href="${una}/admin/dashboard"><i class="fa fa-dashboard"></i> 主页</a>
+                <a href="${una}/admin/posts" class="current"><i class="fa fa-edit"></i> 创作</a>
+                <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
+                <a href="${una}/admin/themes" ><i class="fa fa-gift"></i> 主题</a>
+                <a href="${una}/admin/settings/general"><i class="fa fa-sliders"></i> 系统</a>
+            </div>
+        </div>
+        <div class="right">
+            <a href="/admin/logout" data-toggle="tooltip" data-placement="bottom" title="退出"><i class="fa fa-sign-out"></i></a>
+            <a href="javascript:void(0);" id="profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
+        </div>
+    </div>
+</div>
+<div class="wrapper" style="margin-top: 90px;">
+    <form action="#" method="post" id="post-form">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control post-title-input" style="padding-left: 0;" name="title" placeholder="请输入文章标题(8-60个汉字)" autocomplete="off">
+                    </div>
+                    <div class="form-group input-group mb-0">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;">访问地址：${blog_url}/post/</span>
+                        </div>
+                        <input type="text" value="${slug}" class="form-control" style="padding-left: 0;border-bottom: 0;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;" name="slug" placeholder="请输入文章标题(8-60个汉字)" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <div class="editormd" id="content" style="min-height: 700px;">
+                            <textarea class="editormd-markdown-textarea" name="markdown" id="markdown"></textarea>
+                            <textarea class="editormd-html-textarea" name="html" id="html"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn-dark btn btn-post-attr"><i class="fa fa-cogs"></i></button>
+        <div class="box box-solid post-attr-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">文章属性</h3>
+                <span class="close-box pull-right"><i class="fa fa-times-circle-o fa-2x text-danger"></i></span>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>渲染模板：</label>
+                    <input type="hidden" class="form-control" id="template" name="template"/>
+                    <br/>
+                    <button type="button" class="btn btn-outline-primary btn-dotted select-template">选择</button>
+                </div>
+                <div class="form-group">
+                    <label>开启评论：</label><br>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="comment-open" name="allowChat" value="1" class="custom-control-input">
+                        <label class="custom-control-label" for="comment-open">开启</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="comment-close" name="allowChat" value="0" checked class="custom-control-input">
+                        <label class="custom-control-label" for="comment-close">关闭</label>
+                    </div>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label>分类目录：</label>
+                    <input type="hidden" class="form-control" id="categoryId" name="categoryId"/>
+                    <br/>
+                    <button type="button" class="btn btn-outline-primary btn-dotted" id="select-category">选择</button>
+                </div>
+                <div class="form-group">
+                    <label>标签：</label>
+                    <input type="hidden" class="form-control" id="tagIds" name="tagIds"/>
+                    <br/>
+                    <button type="button" class="btn btn-outline-primary btn-dotted" id="select-tag">选择</button>
+                </div>
+                <div class="form-group">
+                    <label>文章摘要：</label>
+                    <textarea class="form-control" name="summary" rows="3" placeholder="请输入文章摘要..."></textarea>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <label>版权声明：</label><br>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="origin1" name="origin" value="1" checked class="custom-control-input">
+                        <label class="custom-control-label" for="origin1">原创</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="origin2" name="origin" value="0" class="custom-control-input">
+                        <label class="custom-control-label" for="origin2">转载</label>
+                    </div>
+                    <input type="text" class="form-control mb-2" name="url" placeholder="原文地址..."/>
+                    <input type="text" class="form-control" name="author" placeholder="作者"/>
+                </div>
+                <hr/>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="like" name="allowFavor" value="1">
+                        <label class="custom-control-label" for="like">推荐</label>
+                    </div>
+                    <div class="custom-control custom-checkbox custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" id="top" name="allowTop" value="1">
+                        <label class="custom-control-label" for="top">置顶</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>缩略图:</label>
+                    <img src="${una}/img/thumb.png" id="preview-thumb" class="img-thumbnail mb-2">
+                    <input type="hidden" name="thumb" id="thumbnail">
+                    <button type="button" class="btn btn-primary btn-sm upload-file-btn"><i class="fa fa-upload"></i> 上传</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-dotted upload-reset-btn"><i class="fa fa-undo"> 撤销</i></button>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label>Keywords：</label>
+                    <textarea class="form-control" name="keywords" rows="2" placeholder="请输入文章关键词..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Description：</label>
+                    <textarea class="form-control" name="description" rows="3" placeholder="请输入文章描述信息..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>项目地址：</label>
+                    <input type="url" class="form-control" id="projectUrl" name="projectUrl"/>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" class="btn btn-secondary btn-sm submit" publish="0">保存为草稿</button>
+                <button type="button" class="btn btn-primary btn-sm submit" publish="1"> 发 布 </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/jquery.serializejson.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/editormd/editormd.js" ></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script>
+    let editmd;
+    editmd = editormd("content",{
+        width:'100%',
+        height:$(this).height,
+        syncSrolling:'single',
+        path:'${una}/js/editormd/lib/',
+        codeFold:true,
+        emoji:true,
+        taskList:true,
+        tocm:true,
+        tex:true,
+        watch:false,
+        flowChart:true,
+        sequenceDiagram:true,
+        imageUpload:true,
+        saveHTMLToTextarea:true,
+        htmlDecode : "style,script,iframe|on*",
+        imageFormates:['jpg','jpeg','gif','png','bmp','webp'],
+        imageUploadURL:'${una}/admin/uploader/editormd',
+        toolbarIcons:function(){
+            return ["undo","redo","|","bold","del","italic","quote","ucwords","uppercase","lowercase","|","h1","h2","h3","h4","h5","h6","|","list-ul","list-ol","hr","|","link","reference-link","image","code","preformatted-text","code-block","table","datetime","html-entities","pagebreak","|","watch","preview","clear","|","help"];
+        }
+    });
+
+    $(".btn-post-attr").on("click",function(){
+        let h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        $(".post-attr-box .box-body").css("height",(h-170)+"px");
+        $(".post-attr-box").show("slow","linear");
+        $(this).hide();
+    });
+    $(".close-box").on("click",function(){
+        $(".post-attr-box").hide("slow","linear");
+        $(".btn-post-attr").show("slow","linear");
+    });
+
+    $("#select-tag").on("click",function(){
+        var tags = $("input[name=tagIds]").val();
+        var selected = "?selected=";
+        if(tags != null){
+            selected+=tags;
+        }
+        layer.open({
+            type:2,
+            title:"<i class='fa fa-tags'></i> 设置内容标签",
+            shadeClose:false,
+            shade:0.4,
+            area:["900px","624px"],
+            content:'${una}/admin/tags'+selected,
+            resize:false
+        });
+    });
+
+    $(".select-template").on("click",function(){
+        layer.open({
+            type:2,
+            title:"<i class='fa fa-plus'> 选择模板文件</i>",
+            shadeClose:false,
+            shade:0.5,
+            offset:['100px'],
+            area:['400px','500px'],
+            content:"${una}/admin/posts/tpls",
+            resize:false,
+            anim:2,
+        });
+    });
+    $("#select-category").on("click",function(){
+        layer.open({
+            type:2,
+            title:"<i class='fa fa-plus'> 选择文章所属频道</i>",
+            shadeClose:false,
+            shade:0.5,
+            offset:['100px'],
+            area:['400px','500px'],
+            content:"${una}/admin/posts/categories",
+            resize:false,
+            anim:2,
+        });
+    });
+    $(".upload-file-btn").on("click",function(){
+        layer.open({
+            type:2,
+            title:"<i class='fa fa-image'> 上传图片</i>",
+            shadeClose:false,
+            shade:0.5,
+            area:['450px','200px'],
+            content:"${una}/admin/posts/upload",
+            resize:false,
+            anim:2,
+        });
+    });
+    $(".upload-reset-btn").on("click",function(){
+        var thumb_url = $("#thumbnail").val();
+        $("#preview-thumb").attr("src","${una}/img/thumb.png");
+        $("#thumbnail").val("");
+    });
+    $(".submit").on("click",function(){
+        var data = $("#post-form").serializeJSON();
+        data = JSON.stringify(data);
+        var publish = $(this).attr("publish");
+        var loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+        $.ajax({
+            type:'POST',
+            url:'${una}/admin/posts/write?autoSave='+publish,
+            data:data,
+            contentType:"application/json;charset=utf-8",
+            success:function(){
+                layer.close(loading);
+                layer.alert("文章已保存",{title:'系统提示',icon:1},function(){
+                    window.location.href = "${una}/admin/posts";
+                });
+            },
+            error:function(result){
+                layer.close(loading);
+                layer.alert(result.responseText,{title:'系统提示',icon:0});
+            }
+        })
+    });
+</script>
+</html>

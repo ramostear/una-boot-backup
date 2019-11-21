@@ -8,6 +8,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -71,7 +72,7 @@ public class PostParam implements InputConvert<Post> {
 
     private String tagIds;
 
-    @NotBlank(message = "文章栏目编号不能为空")
+    @NotNull(message = "文章栏目编号不能为空")
     private Integer categoryId;
 
     /**

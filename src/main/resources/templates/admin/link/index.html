@@ -31,19 +31,20 @@
 <div class="header fixed-top">
     <div class="container">
         <div class="left">
-            <a href="${una}/admin/dashboard" class="logo"><img src="${una}/img/logo.png" class="img-fluid" style="height: 40px"></a>
+            <a href="${una}/admin/dashboard" class="logo"><img src="${blog_logo!'${una}/img/logo.png'}" class="img-fluid" style="height: 40px"></a>
         </div>
         <div class="middle">
             <div class="inner">
                 <a href="${una}/admin/dashboard"><i class="fa fa-dashboard"></i> 主页</a>
-                <a href="${una}/admin/posts" ><i class="fa fa-edit"></i> 文章</a>
+                <a href="${una}/admin/posts" ><i class="fa fa-edit"></i> 创作</a>
                 <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
                 <a href="${una}/admin/themes" ><i class="fa fa-gift"></i> 主题</a>
-                <a href="${una}/admin/general" class="current"><i class="fa fa-sliders"></i> 系统</a>
+                <a href="${una}/admin/settings/general" class="current"><i class="fa fa-sliders"></i> 系统</a>
             </div>
         </div>
         <div class="right">
-            <a href="${una}/admin/profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="/admin/logout" data-toggle="tooltip" data-placement="bottom" title="退出"><i class="fa fa-sign-out"></i></a>
+            <a href="javascript:void(0);" id="profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
             <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
         </div>
     </div>
@@ -56,31 +57,16 @@
                     <div class="box-header with-border">
                         <ul class="nav nav-pills">
                             <li class="nav-item">
-                                <a class="nav-link" role="tab"  href="${una}/admin/general"><i class="fa fa-wrench"></i> 常规设置</a>
+                                <a class="nav-link" href="${una}/admin/settings/general"><i class="fa fa-wrench"></i> 常规设置</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#seo" data-toggle="pill" role="tab" aria-controls="seo"><i class="fa fa-internet-explorer"></i> SEO设置</a>
+                                <a class="nav-link" href="${una}/admin/settings/cdn"><i class="fa fa-rocket"></i> CDN设置</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link " href="${una}/admin/cdn" data-toggle="pill" role="tab" aria-controls="cdn"><i class="fa fa-rocket"></i> CDN设置</a>
+                                <a class="nav-link" href="${una}/admin/settings/druid"><i class="fa fa-database"></i> SQL监控</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#sql" data-toggle="pill" role="tab" aria-controls="sql"><i class="fa fa-database"></i> SQL监控</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="${una}/admin/links" data-toggle="pill" role="tab" aria-controls="link"><i class="fa fa-link"></i> 友链设置</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="${una}/admin/links" data-toggle="pill" role="tab" aria-controls="banner"><i class="fa fa-image"></i> 轮播图设置</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#email" data-toggle="pill" role="tab" aria-controls="email"><i class="fa fa-envelope-o"></i> SMTP设置</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#cache" data-toggle="pill" role="tab" aria-controls="cache"><i class="fa fa-clone"></i> Cache设置</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#other" data-toggle="pill" role="tab" aria-controls="other"><i class="fa fa-cogs"></i> 其他设置</a>
+                                <a class="nav-link active" role="tab" href="${una}/admin/links"><i class="fa fa-link"></i> 友链设置</a>
                             </li>
                         </ul>
                     </div>
@@ -140,7 +126,8 @@
             var data = $("#link-form").serializeJSON();
             data = JSON.stringify(data);
             layer.confirm("你确定保存该链接吗？",{
-                btn:['确定','取消']
+                btn:['确定','取消'],
+                offset:"150px"
             },function(){
                 let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
                 $.ajax({
@@ -150,13 +137,13 @@
                     contentType:'application/json;charset=UTF-8',
                     success:function(){
                         layer.close(loading);
-                        layer.alert("链接已保存",{title:'提示信息',icon:1},function(){
+                        layer.alert("链接已保存",{title:'提示信息',icon:1,offset:'150px'},function(){
                             window.location.reload();
                         });
                     },
                     error:function(){
                         layer.close(loading);
-                        layer.alert("服务器异常",{title:'提示信息',icon:0});
+                        layer.alert("服务器异常",{title:'提示信息',icon:0,offset:'150px'});
                     }
                 });
             });
@@ -166,7 +153,7 @@
             layer.open({
                 skin:"",
                 type:2,
-                title:"<i class='fa fa-plus'> 新增友链</i>",
+                title:"<i class='fa fa-plus'> 修改友链</i>",
                 shadeClose:false,
                 shade:0.5,
                 offset:['100px'],
@@ -184,7 +171,8 @@
             layer.confirm("你确定要删除该链接吗?",{
                 btn:['确定','取消'],
                 icon:3,
-                title:'提示信息'
+                title:'提示信息',
+                offset:['150px']
             },function(){
                 var loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
                 $.ajax({
@@ -192,13 +180,13 @@
                     url:'${una}/admin/links/'+id,
                     success:function(){
                         layer.close(loading);
-                        layer.alert("链接已经从系统移除!",{title:'提示信息',icon:1},function(){
+                        layer.alert("链接已经从系统移除!",{title:'提示信息',icon:1,offset:["150px"]},function(){
                             window.location.reload();
                         });
                     },
                     error:function(){
                         layer.close(loading);
-                        layer.alert("服务器异常.",{title:'提示信息',icon:0});
+                        layer.alert("服务器异常.",{title:'提示信息',icon:0,offset:["150px"]});
                     }
                 });
             });

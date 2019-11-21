@@ -14,4 +14,11 @@ public class PostDTO extends PostSimpleDTO {
 
     private String html;
 
+    private String markdown;
+
+    private String author;
+
+    private String keywords;
+
+    private String description;
 }

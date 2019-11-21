@@ -1,0 +1,237 @@
+<#include "/admin/common/page.ftl"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+    <link rel="icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="${una}/img/favicon.png" type="image/x-icon">
+    <title>文章 - 尤娜(UnaBoot)</title>
+    <style>
+        .table thead th{
+            border-bottom: 1px solid #dee2e6 !important;
+            border-top: 0 !important;
+        }
+        .table td{
+            border-top: 1px solid #dee2e6 !important;
+        }
+        .layui-layer-btn .layui-layer-btn0{
+            border-color: none;
+            color:#fff !important;
+        }
+    </style>
+</head>
+<body>
+<div class="header fixed-top">
+    <div class="container">
+        <div class="left">
+            <a href="${una}/admin/dashboard" class="logo"><img src="${blog_logo!'${una}/img/logo.png'}" class="img-fluid" style="height: 40px"></a>
+        </div>
+        <div class="middle">
+            <div class="inner">
+                <a href="${una}/admin/dashboard"><i class="fa fa-dashboard"></i> 主页</a>
+                <a href="${una}/admin/posts" class="current"><i class="fa fa-edit"></i> 创作</a>
+                <a href="${una}/admin/categories"><i class="fa fa-th-large"></i> 页面</a>
+                <a href="${una}/admin/themes" ><i class="fa fa-gift"></i> 主题</a>
+                <a href="${una}/admin/settings/general"><i class="fa fa-sliders"></i> 系统</a>
+            </div>
+        </div>
+        <div class="right">
+            <a href="/admin/logout" data-toggle="tooltip" data-placement="bottom" title="退出"><i class="fa fa-sign-out"></i></a>
+            <a href="javascript:void(0);" id="profile" data-toggle="tooltip" data-placement="bottom" title="个人设置"><i class="fa fa-cogs"></i></a>
+            <a href="${una}/index.html" data-toggle="tooltip" data-placement="bottom" title="博客主页"><i class="fa fa-home"></i></a>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="box box-solid">
+                    <div class="box-body">
+                        <div>
+                            <form action="${una}/admin/posts" method="get" class="form-inline form-row mb-0 mt-2 ml-1 pull-left">
+                                <label class="sr-only" for="keywords">关键词</label>
+                                <input type="text" name="keyword" class="form-control form-control-sm mb-2 mr-sm-2" id="keyword" placeholder="关键词...">
+                                <label class="sr-only" for="status">状态</label>
+                                <select name="status" class="form-control form-control-sm mb-2 mr-sm-2" id="status">
+                                    <option value="" selected>文章状态...</option>
+                                    <option value="1">已发布</option>
+                                    <option value="0">未发布</option>
+                                </select>
+                                <label class="sr-only" for="category">分类</label>
+                                <select name="categoryId" class="form-control form-control-sm mb-2 mr-sm-2" id="category">
+                                    <option value="" selected>分类目录...</option>
+                                    <#if categories?? && categories?size gt 0>
+                                        <#list categories as category>
+                                            <option value="${category.id}">${category.name}</option>
+                                        </#list>
+                                    </#if>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-primary mr-sm-2 mb-2">查询</button>
+                                <button type="reset" class="btn btn-sm btn-secondary mr-sm-2 mb-2">重置</button>
+                            </form>
+                            <a href="${una}/admin/posts/write" class="btn btn-primary btn-sm ml-1 mt-1 pull-right"><i class="">+</i> 写文章</a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="box box-solid">
+                    <div class="box-header no-padding with-border">
+                        <p style="display: inline-block;margin-bottom: 0;">共找到<span class="text-danger">${data.totalElements}</span>条符合条件的内容</p>
+                    </div>
+                    <div class="box-body">
+                        <div class="post-box">
+                            <#if data?? && data.content?size gt 0>
+                                <#list data.content as post>
+                                    <div class="post-item">
+                                        <div class="post-wrap has-img">
+                                            <#if post.status == 1>
+                                                <a href="${una}/post/${post.slug}">
+                                                    <img src="${post.thumb!'${una}/img/thumb.png'}" alt="${post.title}" class="image">
+                                                </a>
+                                            <#else>
+                                                <a href="javascript:void(0);">
+                                                    <img src="${post.thumb!'${una}/img/thumb.png'}" alt="${post.title}" class="image">
+                                                </a>
+                                            </#if>
+
+                                            <div class="post-bone">
+                                                <div class="title-wrap">
+                                                    <div class="master-title">
+                                                        <#if post.status == 1>
+                                                            <a href="${una}/post/${post.slug}" target="_blank" title="${post.title}" >${post.title}</a>
+                                                        <#else>
+                                                            <a href="javascript:void(0);" target="_blank" title="${post.title}" >${post.title}</a>
+                                                        </#if>
+
+                                                    </div>
+                                                </div>
+                                                <ul class="count">
+                                                    <li>阅读 ${post.visits}</li>
+                                                    <li>评论 ${post.chatCount}</li>
+                                                    <li>点赞 ${post.likes}</li>
+                                                    <li>栏目 ${post.category.name}</li>
+                                                </ul>
+                                                <div class="construct">
+                                                    <#if post.status == 1>
+                                                        <span class="post-label orange">已发表</span>
+                                                    <#else>
+                                                        <span class="post-label">未发表</span>
+                                                    </#if>
+                                                    <#if post.allowFavor == true>
+                                                        <span class="post-label red">推荐</span>
+                                                    </#if>
+                                                    <#if post.allowTop == true>
+                                                        <span class="post-label red">置顶</span>
+                                                    </#if>
+                                                    <#if post.original == true>
+                                                        <span class="post-label blue">原创</span>
+                                                    </#if>
+                                                </div>
+                                                <div>
+                                                    <span class="label create-time">${post.createTime?string("yyyy-MM-dd HH:mm")}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="post-action-list">
+                                            <div class="action-item">
+												<span class="icon-text text-primary edit-post" data-id="${post.id}">
+													<i class="fa fa-pencil"></i> <span>修改</span>
+												</span>
+                                            </div>
+                                            <#if post.status == 0>
+                                                <div class="action-item">
+                                                    <span class="icon-text text-success publish-post" data-id="${post.id}">
+                                                        <i class="fa fa-send"></i> <span>发表</span>
+                                                    </span>
+                                                </div>
+                                            </#if>
+                                            <div class="action-item">
+												<span class="icon-text text-danger delete-post" data-id="${post.id}">
+													<i class="fa fa-trash"></i> <span>删除</span>
+												</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </#list>
+                            </#if>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <nav aria-label="..." class="pull-right">
+                            <#if data?? && data.content?size gt 0>
+                                <@paging una+"/admin/posts"+(urlParam!'') data 9 />
+                            </#if>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+</div>
+</body>
+
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/blog-boot.js"></script>
+<script>
+    $(".edit-post").on("click",function(){
+        var postId = $(this).attr("data-id");
+        window.location.href = "${una}/admin/posts/"+postId;
+    });
+    $(".publish-post").on("click",function(){
+        var postId = $(this).attr("data-id");
+        layer.confirm("你确定发布改文章吗?",{
+            btn:['确定','取消']
+        },function(){
+            var loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+            $.ajax({
+                type:'PUT',
+                url:'${una}/admin/posts/'+postId+'/status/1',
+                success:function(){
+                    layer.close(loading);
+                    layer.alert("文章已发表",{title:'系统提示',icon:1},function(){
+                        window.location.reload();
+                    });
+                },
+                error:function(){
+                    layer.close(loading);
+                    layer.alert("服务器异常",{title:'系统提示',icon:0});
+                }
+            });
+        });
+    });
+    $(".delete-post").on("click",function(){
+        var postId = $(this).attr("data-id");
+        layer.confirm("你确定要删除该文章吗?",{
+            btn:['确定','取消']
+        },function(){
+            var loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
+            $.ajax({
+                type:'delete',
+                url:'${una}/admin/posts/'+postId,
+                success:function(){
+                    layer.close(loading);
+                    layer.alert("文章已经删除",{title:'系统提示',icon:1},function(){
+                        window.location.reload();
+                    });
+                },
+                error:function(){
+                    layer.close(loading);
+                    layer.alert("服务器异常",{title:'系统提示',icon:0});
+                }
+            })
+        });
+    });
+</script>
+</html>

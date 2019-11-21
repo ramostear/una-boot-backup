@@ -49,7 +49,7 @@ public class PostController extends UnaController {
              .addAttribute("query",postQuery)
              .addAttribute("urlParam",generalUrlParam(postQuery))
              .addAttribute("categories",categoryService.listAll());
-        return "/admin/post/posts";
+        return "/admin/post/index";
     }
 
 
