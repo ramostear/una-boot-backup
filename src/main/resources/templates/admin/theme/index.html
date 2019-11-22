@@ -59,7 +59,7 @@
                                     <div class="card-footer">
                                         <a class="card-name" href="${una}/admin/themes/folders?path=${theme.name}">${theme.name}</a>
                                         <#if theme.status == 1>
-                                            <a href="javascript:void(0);" class="card-name"><i class="fa fa-circle font-16 pull-right text-success"></i></a>
+                                            <a href="javascript:void(0);" class="card-name refresh-theme" data-theme="${theme.name}"><i class="fa fa-refresh font-16 pull-right text-success"></i></a>
                                         <#else>
                                             <a href="javascript:void(0)" class="card-name open-theme" data-theme="${theme.name}"><i class="fa fa-circle font-16 pull-right"> 开启</i></a>
                                             <a href="#" class="card-name"><i class="fa fa-trash-o text-danger font-16 pull-right"> 卸载</i></a>
@@ -113,7 +113,7 @@
             });
         });
         $(".open-theme").on("click",function(){
-            let theme = $(this).attr("data-theme");
+            var theme = $(this).attr("data-theme");
             layer.confirm("你确认启用该主题吗?",{title:'系统提示'},function(){
                 $.ajax({
                     type:'POST',
@@ -130,6 +130,25 @@
                     }
                 })
             });
+        });
+        $(".refresh-theme").on("click",function(){
+           var theme = $(this).attr("data-theme");
+           layer.confirm("你确定刷新主题文件吗?",{title:'系统提示'},function(){
+              $.ajax({
+                  type:'POST',
+                  url:'${una}/admin/themes/refresh/'+theme,
+                  success:function(){
+                      layer.alert(theme+"主题的文件已经刷新",{title:'系统提示',icon:1},function (index) {
+                          layer.close(index);
+                      });
+                  },
+                  error:function(){
+                      layer.alert("刷新失败",{title:'系统提示',icon:3},function(index){
+                         layer.close(index);
+                      });
+                  }
+              })
+           });
         });
     });
 </script>

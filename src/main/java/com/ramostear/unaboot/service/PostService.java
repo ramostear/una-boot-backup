@@ -69,4 +69,8 @@ public interface PostService extends IUnaService<Post,Integer> {
      * @return          List<PostMiniDTO>
      */
     List<PostMiniDTO> findHottestPost(Integer size);
+
+    Post findBySlug(String slug);
+
+    Post identityVisits(Integer id);
 }

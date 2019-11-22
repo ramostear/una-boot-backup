@@ -154,8 +154,8 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         if(currentPostId == null || categoryId == null){
             return null;
         }
-        Object[] data = postRepository.beforePost(currentPostId,categoryId);
-        return convertTo(data);
+        List<Object[]> data = postRepository.beforePost(currentPostId,categoryId);
+        return convertToOne(data);
     }
 
     @Override
@@ -163,14 +163,14 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         if(currentPostId == null || categoryId == null){
             return null;
         }
-        Object[] data = postRepository.afterPost(currentPostId,categoryId);
-        return convertTo(data);
+        List<Object[]> data=postRepository.afterPost(currentPostId,categoryId);
+        return convertToOne(data);
     }
 
     @Override
     public List<PostMiniDTO> associatePost(Integer postId, Integer size) {
         Set<Integer> tagIdSet = postTagService.findAllTagIdByPostId(postId);
-        List<Post> postList = postRepository.associatePostByTags(new ArrayList<>(tagIdSet),size);
+        List<Post> postList = postRepository.associatePostByTags(new ArrayList<>(tagIdSet),postId,size);
         return convertTo(postList);
     }
 
@@ -184,6 +184,26 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
     public List<PostMiniDTO> findHottestPost(Integer size) {
         List<Post> postList = postRepository.findHottestPosts(size);
         return convertTo(postList);
+    }
+
+    @Override
+    public Post findBySlug(String slug) {
+        if(StringUtils.isBlank(slug)){
+            return null;
+        }
+        return postRepository.findBySlug(slug);
+    }
+
+    @Transactional
+    @Override
+    public Post identityVisits(Integer id) {
+        Optional<Post> optional = postRepository.findById(id);
+        if(optional.isPresent()){
+            Post post = optional.get();
+            post.setVisits(post.getVisits()+1);
+            return postRepository.save(post);
+        }
+        return null;
     }
 
     @Override
@@ -272,12 +292,13 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
         return postVO;
     }
 
-    private PostMiniDTO convertTo(Object[] data){
+    private PostMiniDTO convertToOne(List<Object[]> data){
         PostMiniDTO miniDTO = new PostMiniDTO();
-        if(data != null && data.length > 0){
-            Integer id = Integer.parseInt(data[0].toString());
-            String title = data[1].toString();
-            String slug = data[2].toString();
+        if(data != null && data.size()>0){
+            Object[] objects = data.get(0);
+            Integer id = Integer.parseInt(objects[0].toString());
+            String title = objects[1].toString();
+            String slug = objects[2].toString();
             miniDTO.setId(id);
             miniDTO.setTitle(title);
             miniDTO.setSlug(slug);

@@ -7,6 +7,7 @@ import com.ramostear.unaboot.service.ThemeService;
 import com.ramostear.unaboot.service.support.FolderKit;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -78,6 +79,32 @@ public class ThemeServiceImpl extends UnaService<Theme,Integer> implements Theme
             return _theme;
         }else{
             return null;
+        }
+    }
+
+    @Override
+    public boolean refresh(String name) {
+        Assert.notNull(name,"theme name must not be null");
+        Theme theme = themeRepository.findByName(name);
+        if(theme != null && theme.getStatus() == 1){
+            try {
+                FolderKit.remove(new File(
+                        new ClassPathResource("templates").getURI().getPath()
+                                +UnaConst.FILE_SEPARATOR
+                                +"themes"
+                                +UnaConst.FILE_SEPARATOR
+                                +theme.getName()
+                ));
+                FolderKit.copy(theme.getName());
+                return true;
+            }catch (FileNotFoundException fex){
+                log.error("file not found exception:[{}]",fex.getMessage());
+            }catch (IOException ex){
+                log.error("copy file error:[{}]",ex.getMessage());
+            }
+            return false;
+        }else{
+            return false;
         }
     }
 

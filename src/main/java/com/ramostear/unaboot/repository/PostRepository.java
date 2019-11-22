@@ -1,6 +1,6 @@
 package com.ramostear.unaboot.repository;
 
-import com.ramostear.unaboot.domain.dto.PostMiniDTO;
+import com.ramostear.unaboot.domain.dto.PostXsDTO;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.repository.support.UnaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -39,7 +39,7 @@ public interface PostRepository extends UnaRepository<Post,Integer>, JpaSpecific
      * @return                  Object[]
      */
     @Query(nativeQuery = true,value="select p.id,p.title,p.slug from posts as p ,post_category as pc where p.id <?1 and p.status=1 and p.id=pc.post_id and pc.category_id=?2 order by p.id desc limit 1")
-    Object[] beforePost(Integer currentPostId,Integer categoryId);
+    List<Object[]> beforePost(Integer currentPostId, Integer categoryId);
 
     /**
      * 获取特定栏目下当前文章的下一篇内容
@@ -48,7 +48,7 @@ public interface PostRepository extends UnaRepository<Post,Integer>, JpaSpecific
      * @return                  Object[]
      */
     @Query(nativeQuery = true,value="select p.id,p.title,p.slug from posts as p ,post_category as pc where p.id >?1 and p.status=1 and p.id=pc.post_id and pc.category_id=?2 order by p.id asc limit 1")
-    Object[] afterPost(Integer currentPostId,Integer categoryId);
+    List<Object[]> afterPost(Integer currentPostId,Integer categoryId);
 
     /**
      * 查询相关联的文章
@@ -56,8 +56,8 @@ public interface PostRepository extends UnaRepository<Post,Integer>, JpaSpecific
      * @param size
      * @return
      */
-    @Query(nativeQuery = true,value="select p.* from posts as p ,tags as t,post_tag as pt where p.status = 1 and t.id in (?1) and p.id=pt.post_id and t.id=pt.tag_id order by RAND() limit ?2")
-    List<Post> associatePostByTags(List<Integer> tagIds,int size);
+    @Query(nativeQuery = true,value="select p.* from posts as p ,tags as t,post_tag as pt where p.status = 1 and t.id in (?1) and p.id=pt.post_id and t.id=pt.tag_id and p.id !=?2 group by p.id order by p.create_time desc, RAND() limit ?3")
+    List<Post> associatePostByTags(List<Integer> tagIds,Integer postId,int size);
 
     @Query(nativeQuery = true,value="select p.* from posts as p where p.status =1 order by p.create_time desc limit 0,?1")
     List<Post> findNewestPosts(Integer size);

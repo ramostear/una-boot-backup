@@ -1,7 +1,9 @@
 package com.ramostear.unaboot.web.config;
 
 import com.ramostear.unaboot.domain.entity.Setting;
+import com.ramostear.unaboot.domain.entity.Theme;
 import com.ramostear.unaboot.service.SettingService;
+import com.ramostear.unaboot.service.ThemeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -31,7 +33,8 @@ public class LauncherConfiguration implements ApplicationRunner, Ordered, Servle
     @Autowired
     private SettingService settingService;
 
-
+    @Autowired
+    private ThemeService themeService;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -45,6 +48,11 @@ public class LauncherConfiguration implements ApplicationRunner, Ordered, Servle
                 servletContext.setAttribute(key,settingMap.get(key).getValue());
                 log.info("general setting key:[{}], value:[{}]",key,settingMap.get(key).getValue());
             });
+            Theme activeTheme = themeService.used().get(0);
+            if(activeTheme != null){
+                servletContext.setAttribute("theme",activeTheme);
+                log.info("active theme :[{}]",activeTheme);
+            }
         });
         executorService.shutdown();
     }

@@ -9,4 +9,6 @@ import com.ramostear.unaboot.repository.support.UnaRepository;
 public interface TagRepository extends UnaRepository<Tag,Integer> {
 
     Tag findByNameAndSlug(String name,String slug);
+
+    Tag findBySlug(String slug);
 }

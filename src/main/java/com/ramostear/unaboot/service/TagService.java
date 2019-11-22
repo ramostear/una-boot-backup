@@ -15,4 +15,7 @@ public interface TagService extends IUnaService<Tag,Integer> {
 
     @Transactional
     Tag createBy(@NonNull Tag tag);
+
+    @NonNull
+    Tag findBySlug(@NonNull String slug);
 }

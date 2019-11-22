@@ -5,6 +5,7 @@ import com.ramostear.unaboot.common.exception.NotFoundException;
 import com.ramostear.unaboot.common.exception.UnaException;
 import com.ramostear.unaboot.domain.vo.FolderVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 
@@ -176,15 +177,13 @@ public class FolderKit {
     public static void copy(String name) throws IOException{
         String source = UnaConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaConst.FILE_SEPARATOR+name;
         File file = new File(source);
-        String target = ResourceUtils.getURL("classpath").getPath()
-                +UnaConst.FILE_SEPARATOR
-                +"templates"
+        String target = new ClassPathResource("templates").getURL().getPath()
                 +UnaConst.FILE_SEPARATOR
                 +"themes"
                 +UnaConst.FILE_SEPARATOR
                 +name;
-        String[] htmlFiles = file.list((dir,fileNmae)->{
-           if(fileNmae.endsWith(".html")){
+        String[] htmlFiles = file.list((dir,fileName)->{
+           if(fileName.endsWith(".html")){
                return true;
            }else{
                return false;

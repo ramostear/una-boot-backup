@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +40,9 @@ public class ThemeController extends UnaController {
 
     @Autowired
     private ThemeService themeService;
+
+    @Autowired
+    private ServletContext servletContext;
 
     @GetMapping
     public String index(Model model){
@@ -153,6 +157,18 @@ public class ThemeController extends UnaController {
     public ResponseEntity<Object> active(@PathVariable("theme")String theme){
         Theme result = themeService.active(theme);
         if(result != null){
+            servletContext.setAttribute("theme",theme);
+            return ok();
+        }else{
+            return badRequest();
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/refresh/{theme}")
+    public ResponseEntity<Object> refresh(@PathVariable("theme")String theme){
+        boolean flag = themeService.refresh(theme);
+        if(flag){
             return ok();
         }else{
             return badRequest();

@@ -1,5 +1,6 @@
 package com.ramostear.unaboot.freemarker.parser;
 
+import com.ramostear.unaboot.common.util.EncryptUtils;
 import com.ramostear.unaboot.domain.dto.GitalkDTO;
 import com.ramostear.unaboot.freemarker.parser.abs.BaseMethod;
 import com.ramostear.unaboot.service.SettingService;
@@ -37,7 +38,7 @@ public class Gitalk extends BaseMethod {
              .append("repo:'"+gitalk.getRepo()+"',")
              .append("owner:'"+gitalk.getOwner()+"',")
              .append("admin:'"+gitalk.getAdmin()+"',")
-             .append("id:'post_"+postId+"'")
+             .append("id:'"+ EncryptUtils.encrypt("post_"+postId) +"'")
              .append("});");
            sb.append("gitalk.render('"+container+"');");
            return sb.toString();

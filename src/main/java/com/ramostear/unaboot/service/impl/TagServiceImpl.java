@@ -38,4 +38,10 @@ public class TagServiceImpl extends UnaService<Tag,Integer> implements TagServic
         Assert.isTrue(!flag,"tag already exists");
         return tagRepository.save(tag);
     }
+
+    @Override
+    public Tag findBySlug(String slug) {
+        Assert.notNull(slug,"tag slug must not be null");
+        return tagRepository.findBySlug(slug);
+    }
 }

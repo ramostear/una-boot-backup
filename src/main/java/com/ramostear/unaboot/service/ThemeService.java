@@ -24,6 +24,7 @@ public interface ThemeService extends IUnaService<Theme,Integer> {
     @NonNull
     Theme active(@NonNull String name);
 
+    boolean refresh(@NonNull String name);
     /**
      * 已启用主题
      * @return

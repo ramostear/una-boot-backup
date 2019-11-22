@@ -114,7 +114,7 @@ public class CategoryServiceImpl extends UnaService<Category,Integer> implements
 
     @Override
     public List<Category> navigation() {
-        return categoryRepository.findAllByAllowNavOrderBySortNumDesc(1);
+        return categoryRepository.findAllByAllowNavOrderBySortNumAsc(1);
     }
 
     @NonNull

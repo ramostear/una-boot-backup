@@ -17,5 +17,5 @@ public interface CategoryRepository extends UnaRepository<Category,Integer> {
 
     Optional<Category> getByName(@NonNull String name);
 
-    List<Category> findAllByAllowNavOrderBySortNumDesc(Integer allowNav);
+    List<Category> findAllByAllowNavOrderBySortNumAsc(Integer allowNav);
 }

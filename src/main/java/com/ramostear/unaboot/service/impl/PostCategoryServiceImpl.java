@@ -91,7 +91,7 @@ public class PostCategoryServiceImpl extends UnaService<PostCategory,Integer> im
     public Page<Post> pagePostByCategoryId(Integer categoryId, Pageable pageable) {
         Assert.notNull(categoryId,"category id must not be null");
         Assert.notNull(pageable,"pageable must not be null");
-        Set<Integer> postIds = postCategoryRepository.findPostIdsByCategoryId(categoryId);
+        Set<Integer> postIds = postCategoryRepository.findPostIdsByCategoryIdAndPostStatus(categoryId,1);
         return postRepository.findAllByIdIn(postIds,pageable);
     }
 
