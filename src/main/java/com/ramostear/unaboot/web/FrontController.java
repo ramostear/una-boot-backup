@@ -1,7 +1,5 @@
 package com.ramostear.unaboot.web;
 
-import com.ramostear.unaboot.common.util.CookieUtils;
-import com.ramostear.unaboot.common.util.EncryptUtils;
 import com.ramostear.unaboot.domain.entity.Category;
 import com.ramostear.unaboot.domain.entity.Post;
 import com.ramostear.unaboot.domain.entity.Tag;
@@ -11,6 +9,9 @@ import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.PostService;
 import com.ramostear.unaboot.service.TagService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,8 @@ public class FrontController extends UnaController{
 
     @Autowired
     private PostService postService;
+
+    private static CacheManager cacheManager = CacheManager.newInstance();
 
     /**
      * 网站主页
@@ -111,12 +114,7 @@ public class FrontController extends UnaController{
         if(post == null || post.getStatus() == 0){
             return redirect("/");
         }
-        String cookieValue = CookieUtils.read("ubp"+post.getId());
-        if(cookieValue == null || cookieValue.trim().equals("")){
-            CookieUtils.write("ubp"+post.getId(),EncryptUtils.encrypt("post_"+post.getId()),60);
-            log.info("post cookie,key:[{}],value:[{}]","ubp"+post.getId(),EncryptUtils.encrypt("post_"+post.getId()));
-            post = postService.identityVisits(post.getId());
-        }
+        post.setVisits(visitsCache(post));
         PostVO postVO = postService.convertToPostVO(post);
         model.addAttribute("post",postVO);
         return view(post.getTemplate());
@@ -125,5 +123,25 @@ public class FrontController extends UnaController{
     private String view(String template){
         Theme theme = (Theme) servletContext.getAttribute("theme");
         return "/themes/"+theme.getName()+"/"+template.substring(0,template.indexOf("."));
+    }
+
+    private Long visitsCache(Post post){
+        Ehcache ehcache = cacheManager.getEhcache("dayHits");
+        Element element = ehcache.get(post.getId()+"_visits");
+        long count = 0;
+        if(element != null){
+            count = (Long) element.getObjectValue();
+        }
+        count++;
+        ehcache.put(new Element(post.getId()+"_visits",count));
+        if(count > 50){
+            post.setVisits(post.getVisits()+count);
+            postService.update(post);
+            ehcache.removeAll();
+            return post.getVisits();
+        }else{
+            return post.getVisits()+count;
+        }
+
     }
 }

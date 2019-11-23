@@ -6,7 +6,11 @@ import com.ramostear.unaboot.repository.LinkRepository;
 import com.ramostear.unaboot.service.LinkService;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @ClassName LinkServiceImpl
@@ -30,5 +34,11 @@ public class LinkServiceImpl extends UnaService<Link,Integer> implements LinkSer
     public LinkVO convertToLinkVO(Link link) {
         LinkVO linkVO = new LinkVO().convertFrom(link);
         return linkVO;
+    }
+
+    @Override
+    @Cacheable(value = "link")
+    public List<Link> listAll(Sort sort) {
+        return super.listAll(sort);
     }
 }

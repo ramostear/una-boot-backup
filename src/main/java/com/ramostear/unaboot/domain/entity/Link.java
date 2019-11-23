@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Ramostear on 2019/11/15 0015.
@@ -14,8 +15,9 @@ import javax.persistence.*;
 @Table(name = "links")
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Link extends UnaEntity {
+public class Link extends UnaEntity implements Serializable {
 
+    private static final long serialVersionUID = -8089034796881732069L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

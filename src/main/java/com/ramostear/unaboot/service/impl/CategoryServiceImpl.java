@@ -11,6 +11,7 @@ import com.ramostear.unaboot.service.CategoryService;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,7 @@ public class CategoryServiceImpl extends UnaService<Category,Integer> implements
     }
 
     @Override
+    @Cacheable(value = "category",key = "#slug")
     public Category getBySlug(String slug) {
         Assert.notNull(slug,"category slug must not be null");
         return categoryRepository.getBySlug(slug).orElse(null);
@@ -113,6 +115,7 @@ public class CategoryServiceImpl extends UnaService<Category,Integer> implements
     }
 
     @Override
+    @Cacheable(cacheNames = "category")
     public List<Category> navigation() {
         return categoryRepository.findAllByAllowNavOrderBySortNumAsc(1);
     }

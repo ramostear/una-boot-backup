@@ -10,6 +10,7 @@ import com.ramostear.unaboot.repository.TagRepository;
 import com.ramostear.unaboot.service.PostTagService;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class PostTagServiceImpl extends UnaService<PostTag,Integer> implements P
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#postId")
     public List<Tag> findAllTagByPostId(Integer postId) {
         Assert.notNull(postId,"post id must not be null");
         Set<Integer> tagIdSet = postTagRepository.findAllTagIdsByPostId(postId);

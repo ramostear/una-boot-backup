@@ -6,8 +6,12 @@ import com.ramostear.unaboot.service.TagService;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.util.Assert;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by Ramostear on 2019/11/14 0014.
@@ -40,8 +44,15 @@ public class TagServiceImpl extends UnaService<Tag,Integer> implements TagServic
     }
 
     @Override
+    @Cacheable(value = "tag",key = "#slug")
     public Tag findBySlug(String slug) {
         Assert.notNull(slug,"tag slug must not be null");
         return tagRepository.findBySlug(slug);
+    }
+
+    @Override
+    @Cacheable(value = "tag")
+    public List<Tag> listAll(Sort sort) {
+        return super.listAll(sort);
     }
 }

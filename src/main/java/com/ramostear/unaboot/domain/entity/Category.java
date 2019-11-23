@@ -3,6 +3,7 @@ package com.ramostear.unaboot.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @ ClassName Category
@@ -18,8 +19,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "categories")
 @EqualsAndHashCode(callSuper = true)
-public class Category extends UnaEntity {
+public class Category extends UnaEntity implements Serializable {
 
+    private static final long serialVersionUID = -1140636820169973152L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

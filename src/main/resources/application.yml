@@ -48,6 +48,9 @@ spring:
     multipart:
       max-file-size: 30MB
       max-request-size: 30MB
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 xss:
   enabled:  false
   urlPatterns:  /monitor/*
