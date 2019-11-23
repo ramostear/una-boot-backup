@@ -10,9 +10,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -48,10 +50,10 @@ public class LauncherConfiguration implements ApplicationRunner, Ordered, Servle
                 servletContext.setAttribute(key,settingMap.get(key).getValue());
                 log.info("general setting key:[{}], value:[{}]",key,settingMap.get(key).getValue());
             });
-            Theme activeTheme = themeService.used().get(0);
-            if(activeTheme != null){
-                servletContext.setAttribute("theme",activeTheme);
-                log.info("active theme :[{}]",activeTheme);
+            List<Theme> usedList = themeService.used();
+            if(!CollectionUtils.isEmpty(usedList)){
+                servletContext.setAttribute("theme",usedList.get(0));
+                log.info("active theme :[{}]",usedList.get(0));
             }
         });
         executorService.shutdown();
