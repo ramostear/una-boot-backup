@@ -120,6 +120,16 @@ public class FrontController extends UnaController{
         return view(post.getTemplate());
     }
 
+
+    @GetMapping("/archives/{archive}")
+    public String tag(@PathVariable("archive")String archive,Model model){
+        if(StringUtils.isBlank(archive)){
+            return redirect("/");
+        }
+        model.addAttribute("archive",archive);
+        return view("archive.html");
+    }
+
     private String view(String template){
         Theme theme = (Theme) servletContext.getAttribute("theme");
         return "/themes/"+theme.getName()+"/"+template.substring(0,template.indexOf("."));

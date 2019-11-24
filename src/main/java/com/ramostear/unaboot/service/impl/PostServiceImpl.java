@@ -12,6 +12,7 @@ import com.ramostear.unaboot.service.*;
 import com.ramostear.unaboot.service.support.UnaService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -187,6 +188,7 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
     }
 
     @Override
+    @Cacheable(value = "posts",key = "#slug")
     public Post findBySlug(String slug) {
         if(StringUtils.isBlank(slug)){
             return null;

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${una}/css/ionicons.css" />
     <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
     <link rel="stylesheet" href="${una}/css/blog-boot.css" />
-    <title>友链 - 尤娜(UnaBoot)</title>
+    <title>缓存 - 尤娜(UnaBoot)</title>
     <style>
         .table thead th{
             border-bottom: 1px solid #dee2e6 !important;
@@ -66,43 +66,35 @@
                                 <a class="nav-link" href="${una}/admin/settings/druid"><i class="fa fa-database"></i> SQL监控</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" role="tab" href="${una}/admin/links"><i class="fa fa-link"></i> 友链设置</a>
+                                <a class="nav-link" href="${una}/admin/links"><i class="fa fa-link"></i> 友链设置</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="${una}/admin/settings/talk"><i class="fa fa-comments-o"></i> Gitalk设置</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="${una}/admin/settings/cache"><i class="fa fa-server"></i> 缓存管理</a>
+                                <a class="nav-link active" role="tab" href="${una}/admin/settings/cache"><i class="fa fa-server"></i> 缓存管理</a>
                             </li>
                         </ul>
                     </div>
                     <div class="box-body">
                         <div class="tab-content">
-                            <div class="tab-pane show fade active" id="cdn" role="tabpanel" aria-labelledby="cdn">
-                                <div class="link-form">
-                                    <form class="form-row form-inline" id="link-form">
-                                        <input type="text" class="form-control mr-2 ml-1" name="name" placeholder="链接名称"/>
-                                        <input type="url" class="form-control mr-2" name="url" placeholder="链接地址"/>
-                                        <input type="number" min="0" step="1" name="sortNum" class="form-control mr-2" placeholder="排序号"/>
-                                        <button type="button" class="btn btn-primary submit-btn pl-3 pr-3"><i class="fa fa-check"></i></button>
-                                    </form>
+                            <div class="tab-pane show fade active" id="cache" role="tabpanel" aria-labelledby="cache">
+                                <div class="mb-2 text-right">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 一键清理</button>
                                 </div>
-                                <table class="table table-hover mt-2">
+                                <table class="table table-hover">
                                     <thead class="thead-light">
-                                        <tr><th>#</th><th>名称</th><th>地址</th><th>排序</th><th>操作</th></tr>
+                                        <tr><th>名称</th><th>key(条)</th><th>内存(条)</th><th>磁盘(条)</th><th width="80">操作</th></tr>
                                     </thead>
                                     <tbody>
-                                        <#if links?? && links?size gt 0>
-                                            <#list links as link>
+                                        <#if caches?? && caches?size gt 0>
+                                            <#list caches as cache>
                                                 <tr>
-                                                    <td>${link.id}</td>
-                                                    <td>${link.name}</td>
-                                                    <td>${link.url}</td>
-                                                    <td>${link.sortNum}</td>
-                                                    <td>
-                                                        <a href="javascript:void(0)" data-id="${link.id}" title="修改" class="edit-link btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
-                                                        <a href="javascript:void(0)" data-id="${link.id}" title="删除" class="remove-link btn btn-dark btn-sm"><i class="fa fa-trash-o"></i></a>
-                                                    </td>
+                                                    <td>${cache.name}</td>
+                                                    <td>${cache.size}</td>
+                                                    <td>${cache.memorySize}</td>
+                                                    <td>${cache.diskSize}</td>
+                                                    <td><button class="btn btn-danger btn-sm" data-name="${cache.name}"><i class="fa fa-times-circle-o"></i></button></td>
                                                 </tr>
                                             </#list>
                                         </#if>
@@ -129,74 +121,29 @@
 <script>
     $(function(){
         $(".submit-btn").on("click",function(){
-            var data = $("#link-form").serializeJSON();
-            data = JSON.stringify(data);
-            layer.confirm("你确定保存该链接吗？",{
+            var data = $("#cdn-form").serialize();
+            layer.confirm("你确定需要更新CND的配置参数吗",{
                 btn:['确定','取消'],
-                offset:"150px"
+                offset:['150px']
             },function(){
                 let loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
                 $.ajax({
                     type:'post',
-                    url:'${una}/admin/links/write',
+                    url:'${una}/admin/settings/cdn',
                     data:data,
-                    contentType:'application/json;charset=UTF-8',
                     success:function(){
                         layer.close(loading);
-                        layer.alert("链接已保存",{title:'提示信息',icon:1,offset:'150px'},function(){
+                        layer.alert("CDN配置已经更新",{title:'提示信息',icon:1,offset:['150px']},function(){
                             window.location.reload();
                         });
                     },
                     error:function(){
                         layer.close(loading);
-                        layer.alert("服务器异常",{title:'提示信息',icon:0,offset:'150px'});
+                        layer.alert("服务器异常",{title:'提示信息',icon:0,offset:['150px']});
                     }
                 });
-            });
+            })
         });
-        $(".edit-link").on("click",function(){
-            var id = $(this).attr("data-id");
-            layer.open({
-                skin:"",
-                type:2,
-                title:"<i class='fa fa-plus'> 修改友链</i>",
-                shadeClose:false,
-                shade:0.5,
-                offset:['100px'],
-                area:['30%','29.5%'],
-                content:"${una}/admin/links/"+id,
-                resize:false,
-                anim:2,
-                end:function(){
-                    location.reload();
-                }
-            });
-        });
-        $(".remove-link").on("click",function(){
-            var id = $(this).attr("data-id");
-            layer.confirm("你确定要删除该链接吗?",{
-                btn:['确定','取消'],
-                icon:3,
-                title:'提示信息',
-                offset:['150px']
-            },function(){
-                var loading = layer.load(2,{shade:[0.4,'#f0f0f0']});
-                $.ajax({
-                    type:'delete',
-                    url:'${una}/admin/links/'+id,
-                    success:function(){
-                        layer.close(loading);
-                        layer.alert("链接已经从系统移除!",{title:'提示信息',icon:1,offset:["150px"]},function(){
-                            window.location.reload();
-                        });
-                    },
-                    error:function(){
-                        layer.close(loading);
-                        layer.alert("服务器异常.",{title:'提示信息',icon:0,offset:["150px"]});
-                    }
-                });
-            });
-        })
     });
 </script>
 </html>

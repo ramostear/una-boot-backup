@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,7 +16,10 @@ import java.util.List;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class PostListVO extends PostSimpleDTO {
+public class PostListVO extends PostSimpleDTO implements Serializable {
+
+    private static final long serialVersionUID = 1394952277427768642L;
+    private String author;
 
     private Long chatCount = 0L;
 
