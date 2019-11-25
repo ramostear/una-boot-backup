@@ -1,11 +1,11 @@
 package com.ramostear.unaboot.web;
 
-import com.ramostear.unaboot.domain.entity.Category;
-import com.ramostear.unaboot.domain.entity.Post;
-import com.ramostear.unaboot.domain.entity.Tag;
-import com.ramostear.unaboot.domain.entity.Theme;
+import com.ramostear.unaboot.domain.entity.*;
+import com.ramostear.unaboot.domain.param.PostQuery;
+import com.ramostear.unaboot.domain.vo.PostListVO;
 import com.ramostear.unaboot.domain.vo.PostVO;
 import com.ramostear.unaboot.service.CategoryService;
+import com.ramostear.unaboot.service.PostCategoryService;
 import com.ramostear.unaboot.service.PostService;
 import com.ramostear.unaboot.service.TagService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,11 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +48,9 @@ public class FrontController extends UnaController{
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private PostCategoryService postCategoryService;
 
     private static CacheManager cacheManager = CacheManager.newInstance();
 
@@ -128,6 +134,43 @@ public class FrontController extends UnaController{
         }
         model.addAttribute("archive",archive);
         return view("archive.html");
+    }
+
+    @GetMapping("/guides/{slug}")
+    public String guide(@PathVariable("slug")String slug){
+        Category category = categoryService.getBySlug(slug);
+        if(category != null){
+            Post post = postCategoryService.findTopPostByCategoryId(category.getId());
+            if(post != null){
+                return redirect("/post/"+post.getSlug());
+            }else{
+                return redirect("/");
+            }
+        }else{
+            return redirect("/");
+        }
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(name = "keyword",defaultValue = "",required = false)String keyword,
+                         @RequestParam(name = "offset",defaultValue = "1")Integer offset,Model model){
+        if(StringUtils.isBlank(keyword)){
+            model.addAttribute("posts",null);
+        }else{
+            PostQuery postQuery = new PostQuery();
+            postQuery.setKeyword(keyword);
+            postQuery.setStatus(1);
+            Page<Post> postPage = postService.pageBy(postQuery, PageRequest.of(offset-1,15));
+            if(CollectionUtils.isEmpty(postPage.getContent())){
+                model.addAttribute("posts",null);
+            }else{
+                Page<PostListVO> postListVOS = postService.convertToPostListVO(postPage);
+                model.addAttribute("posts",postListVOS);
+            }
+        }
+        model.addAttribute("offset",offset);
+        model.addAttribute("keyword",keyword);
+        return view("search.html");
     }
 
     private String view(String template){

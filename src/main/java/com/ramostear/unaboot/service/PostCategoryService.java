@@ -55,4 +55,7 @@ public interface PostCategoryService extends IUnaService<PostCategory,Integer> {
 
     @NonNull
     List<CategoryPostCountDTO> findAllCategoryPostCountDTO(@NonNull Sort sort);
+
+    @NonNull
+    Post findTopPostByCategoryId(@NonNull Integer categoryId);
 }

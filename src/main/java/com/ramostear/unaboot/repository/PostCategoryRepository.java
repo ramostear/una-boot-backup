@@ -48,4 +48,8 @@ public interface PostCategoryRepository extends UnaRepository<PostCategory,Integ
     @NonNull
     @Query("select new com.ramostear.unaboot.domain.vo.CategoryPostCountVO(count(pc.postId),pc.categoryId,c.name,c.slug) from PostCategory as pc,Category as c,Post as p where pc.categoryId = c.id and pc.postId = p.id and p.status = :status group by pc.categoryId")
     List<CategoryPostCountVO> findCatetoryPostCountByPostStatus(@NonNull @Param("status") Integer status);
+
+    @NonNull
+    @Query(nativeQuery = true,value = "select p.id from posts as p,post_category as pc where pc.category_id = ?1 and pc.post_id = p.id and p.status =1 order by p.create_time asc limit 1")
+    Integer findTopPostIdByCategoryId(@NonNull Integer categoryId);
 }

@@ -161,4 +161,13 @@ public class PostCategoryServiceImpl extends UnaService<PostCategory,Integer> im
                     return dto;
                 }).collect(Collectors.toList());
     }
+
+    @Override
+    public Post findTopPostByCategoryId(Integer categoryId) {
+        Integer postId = postCategoryRepository.findTopPostIdByCategoryId(categoryId);
+        if(postId != null){
+            return postRepository.findById(postId).orElseGet(null);
+        }
+        return null;
+    }
 }
