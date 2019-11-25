@@ -120,6 +120,11 @@ public class CategoryServiceImpl extends UnaService<Category,Integer> implements
         return categoryRepository.findAllByAllowNavOrderBySortNumAsc(1);
     }
 
+    @Override
+    public List<Category> findByParent(Integer parentId) {
+        return categoryRepository.findAllByParentIdOrderBySortNumDesc(parentId);
+    }
+
     @NonNull
     private CategoryVO getRoot(){
         CategoryVO vo = new CategoryVO();

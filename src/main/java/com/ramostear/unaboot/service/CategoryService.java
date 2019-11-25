@@ -31,4 +31,7 @@ public interface CategoryService extends IUnaService<Category,Integer> {
     List<CategoryDTO> convertTo(@NonNull Collection<Category> categories);
 
     List<Category> navigation();
+
+    @NonNull
+    List<Category> findByParent(@NonNull Integer parentId);
 }
