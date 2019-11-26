@@ -150,6 +150,7 @@ public class FolderKit {
      */
     public static boolean remove(String target){
         String path = UnaConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaConst.FILE_SEPARATOR+target;
+        log.info("remove file path :[{}]",path);
         File file = new File(path);
         return remove(file);
     }
@@ -176,12 +177,14 @@ public class FolderKit {
      */
     public static void copy(String name) throws IOException{
         String source = UnaConst.FILE_UPLOAD_ROOT_DIR+"themes"+UnaConst.FILE_SEPARATOR+name;
+        log.info("source path : [{}]",source);
         File file = new File(source);
         String target = new ClassPathResource("templates").getURL().getPath()
                 +UnaConst.FILE_SEPARATOR
                 +"themes"
                 +UnaConst.FILE_SEPARATOR
                 +name;
+        log.info("target path:[{}]",target);
         String[] htmlFiles = file.list((dir,fileName)->{
            if(fileName.endsWith(".html")){
                return true;
@@ -209,14 +212,13 @@ public class FolderKit {
     public static List<String> htmlFiles(String target){
         String file_path;
         try {
-            file_path = ResourceUtils.getURL("classpath").getPath()
-                    +UnaConst.FILE_SEPARATOR
-                    +"templates"
+            file_path = new ClassPathResource("templates").getURL().getPath()
                     +UnaConst.FILE_SEPARATOR
                     +"themes"
                     +UnaConst.FILE_SEPARATOR
                     +target;
-        }catch (FileNotFoundException ex){
+            log.info("target path : [{}]",file_path);
+        }catch (IOException ex){
             log.error("file not found.");
             return Collections.emptyList();
         }
