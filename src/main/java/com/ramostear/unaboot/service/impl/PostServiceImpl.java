@@ -64,6 +64,14 @@ public class PostServiceImpl extends UnaService<Post,Integer> implements PostSer
     }
 
     @Override
+    @Cacheable(value = "search",key = "#postQuery.keyword+'_'+#pageable.getOffset()")
+    public Page<Post> search(PostQuery postQuery, Pageable pageable) {
+        Assert.notNull(postQuery,"query param must not be null");
+        Assert.notNull(pageable,"pageable must not be null");
+        return postRepository.findAll(buildSpecByQuery(postQuery),pageable);
+    }
+
+    @Override
     public Page<Post> pageBy(String keyword, Pageable pageable) {
         Assert.notNull(keyword,"query param must not be null");
         Assert.notNull(pageable,"pageable must not be null");

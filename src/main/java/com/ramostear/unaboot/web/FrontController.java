@@ -160,7 +160,7 @@ public class FrontController extends UnaController{
             PostQuery postQuery = new PostQuery();
             postQuery.setKeyword(keyword);
             postQuery.setStatus(1);
-            Page<Post> postPage = postService.pageBy(postQuery, PageRequest.of(offset-1,15));
+            Page<Post> postPage = postService.search(postQuery, PageRequest.of(offset-1,15));
             if(CollectionUtils.isEmpty(postPage.getContent())){
                 model.addAttribute("posts",null);
             }else{

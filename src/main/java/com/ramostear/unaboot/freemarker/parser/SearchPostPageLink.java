@@ -39,7 +39,7 @@ public class SearchPostPageLink extends BaseMethod {
         PostQuery postQuery = new PostQuery();
         postQuery.setStatus(1);
         postQuery.setKeyword(keyword);
-        Page<Post> data = postService.pageBy(keyword,PageRequest.of(offset-1,size));
+        Page<Post> data = postService.search(postQuery,PageRequest.of(offset-1,size));
 
         int span = (spans-3)/2;
         int pageNo = data.getNumber()+1;

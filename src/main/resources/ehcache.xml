@@ -45,4 +45,10 @@
            overflowToDisk="true">
     </cache>
 
+    <cache name="search"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
 </ehcache>
