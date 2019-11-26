@@ -16366,16 +16366,16 @@ var Text = function(parentEl) {
             if (!self.showInvisibles && simpleSpace)
                 continue;
 
-            var before = i != m.index ? value.slice(i, m.index) : "";
+            var before = i != m.profile ? value.slice(i, m.profile) : "";
 
-            i = m.index + m[0].length;
+            i = m.profile + m[0].length;
             
             if (before) {
                 valueFragment.appendChild(this.dom.createTextNode(before, this.element));
             }
                 
             if (tab) {
-                var tabSize = self.session.getScreenTabSize(screenColumn + m.index);
+                var tabSize = self.session.getScreenTabSize(screenColumn + m.profile);
                 valueFragment.appendChild(self.$tabStrings[tabSize].cloneNode(true));
                 screenColumn += tabSize - 1;
             } else if (simpleSpace) {

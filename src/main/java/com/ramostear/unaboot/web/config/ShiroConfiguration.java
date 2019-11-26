@@ -57,10 +57,6 @@ public class ShiroConfiguration {
         accountRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         accountRealm.setCachingEnabled(true);
         accountRealm.setCacheManager(ehCacheManager());
-        accountRealm.setAuthenticationCachingEnabled(true);
-        accountRealm.setAuthenticationCacheName("authenticationCache");
-        accountRealm.setAuthorizationCachingEnabled(true);
-        accountRealm.setAuthorizationCacheName("authorizationCache");
         return accountRealm;
     }
 

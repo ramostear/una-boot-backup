@@ -196,7 +196,20 @@
                     }
                 });
             });
-        })
+        });
+        $("#profile").on("click",function(){
+            layer.open({
+                type:2,
+                title:"<i class='fa fa-users'> 重置管理员密码</i>",
+                shadeClose:false,
+                shade:0.5,
+                area:['400px','350px'],
+                offset:['150px'],
+                content:"${una}/admin/user/profile",
+                resize:false,
+                anim:2,
+            });
+        });
     });
 </script>
 </html>
