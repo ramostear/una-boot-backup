@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="una-boot:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>una-boot</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="una-boot-1.0.0.war">
+      <element id="artifact" artifact-name="una-boot:war exploded" />
+    </root>
+  </artifact>
+</component>
