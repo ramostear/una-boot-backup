@@ -1,6 +1,6 @@
 <img src="https://cdn.ramostear.com/unaboot.png"/>
 
-# 尤娜: 一个基于Spring Boot 2.0 构建的易于使用的Java 博客系统
+# 尤娜: 一个基于Spring Boot 2.0 构建的极简Java 博客系统
 
 [![License](https://img.shields.io/badge/license-Apache%20License%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.html) [![author](https://img.shields.io/badge/author-ramostear-brightgreen)](https://www.ramostear.com) [![author](https://img.shields.io/badge/JDK-1.8-brightgreen)]() [![GitHub language count](https://img.shields.io/github/languages/count/ramostear/una-boot)]() ![GitHub last commit](https://img.shields.io/github/last-commit/ramostear/una-boot)
 
