@@ -193,7 +193,7 @@ public class FrontController extends UnaController{
             ehcache.remove(post.getId()+"_visits");
             return post.getVisits();
         }else{
-            return (post.getVisits())+1;
+            return post.getVisits();
         }
 
     }
