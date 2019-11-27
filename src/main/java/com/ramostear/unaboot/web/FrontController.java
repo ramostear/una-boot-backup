@@ -190,7 +190,7 @@ public class FrontController extends UnaController{
         if(count > 50){
             post.setVisits(post.getVisits()+count);
             postService.update(post);
-            ehcache.removeAll();
+            ehcache.remove(post.getId()+"_visits");
             return post.getVisits();
         }else{
             return post.getVisits()+count;
