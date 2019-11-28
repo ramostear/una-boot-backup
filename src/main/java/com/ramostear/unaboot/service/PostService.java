@@ -23,6 +23,9 @@ public interface PostService extends IUnaService<Post,Integer> {
     Page<Post> pageBy(@NonNull PostQuery postQuery, @NonNull Pageable pageable);
 
     @NonNull
+    Page<Post> search(@NonNull PostQuery postQuery,@NonNull Pageable pageable);
+
+    @NonNull
     Page<Post> pageBy(@NonNull String keyword,@NonNull Pageable pageable);
 
     @NonNull

@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>runtime</scope>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -163,7 +163,7 @@
         <dependency>
             <groupId>com.github.junrar</groupId>
             <artifactId>junrar</artifactId>
-            <version>0.7</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>ant</groupId>
@@ -238,4 +238,5 @@
         </pluginManagement>
     </build>
 
+    <packaging>war</packaging>
 </project>

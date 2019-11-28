@@ -28,7 +28,24 @@
            overflowToDisk="true">
     </cache>
     <cache name="tag"
-           timeToLiveSeconds="3600"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="archives"
+           maxEntriesLocalHeap="100"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="posts"
+           maxEntriesLocalHeap="500"
+           eternal="true"
+           overflowToDisk="true">
+    </cache>
+
+    <cache name="search"
            maxEntriesLocalHeap="500"
            eternal="true"
            overflowToDisk="true">

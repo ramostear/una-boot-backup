@@ -2,7 +2,8 @@
 SQLyog v10.2 
 MySQL - 5.6.45-log : Database - una-boot-db
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -38,7 +39,7 @@ CREATE TABLE `categories` (
 
 /*Data for the table `categories` */
 
-insert  into `categories`(`id`,`create_time`,`deleted`,`update_time`,`allow_nav`,`description`,`keywords`,`name`,`parent_id`,`slug`,`sort_num`,`template`) values (1,'2019-11-19 07:33:46',0,'2019-11-19 07:41:30',0,'谭朝红的博客','谭朝红,博客,Spring,Spring Boot,Spring Cloud','首页',0,'index',1,'index.html'),(2,'2019-11-19 07:37:38',0,'2019-11-19 07:37:38',1,'项目','项目','项目',0,'projects',2,'projects.html'),(3,'2019-11-19 07:38:23',0,'2019-11-19 07:38:23',1,'指南','指南','指南',0,'guides',3,'guides.html'),(4,'2019-11-19 07:39:02',0,'2019-11-19 07:39:02',1,'博客','博客','博客',0,'blogs',4,'blogs.html'),(5,'2019-11-19 07:40:43',0,'2019-11-19 07:40:43',1,'关于我','关于我','关于我',0,'about',5,'about.html');
+insert  into `categories`(`id`,`create_time`,`deleted`,`update_time`,`allow_nav`,`description`,`keywords`,`name`,`parent_id`,`slug`,`sort_num`,`template`) values (1,'2019-11-19 07:33:46',0,'2019-11-19 07:41:30',0,'谭朝红的博客','谭朝红,博客,Spring,Spring Boot,Spring Cloud','首页',0,'index',1,'profile.html'),(2,'2019-11-19 07:37:38',0,'2019-11-19 07:37:38',1,'项目','项目','项目',0,'projects',2,'projects.html'),(3,'2019-11-19 07:38:23',0,'2019-11-19 07:38:23',1,'指南','指南','指南',0,'guides',3,'guides.html'),(4,'2019-11-19 07:39:02',0,'2019-11-19 07:39:02',1,'博客','博客','博客',0,'blogs',4,'blogs.html'),(5,'2019-11-19 07:40:43',0,'2019-11-19 07:40:43',1,'关于我','关于我','关于我',0,'about',5,'about.html');
 
 /*Table structure for table `links` */
 

@@ -4,6 +4,7 @@ import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Ramostear on 2019/11/13 0013.
@@ -15,8 +16,9 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Post extends UnaEntity{
+public class Post extends UnaEntity implements Serializable {
 
+    private static final long serialVersionUID = 3207127957984356732L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

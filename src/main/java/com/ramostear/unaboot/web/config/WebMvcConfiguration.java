@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.ramostear.unaboot.common.UnaConst;
+import com.ramostear.unaboot.web.interceptor.ErrorInterceptor;
 import com.ramostear.unaboot.web.interceptor.ServletContextHandlerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
     private ServletContextHandlerInterceptor servletContextHandlerInterceptor;
 
+    @Autowired
+    private ErrorInterceptor errorInterceptor;
+
     @Override
     protected void configurePathMatch(PathMatchConfigurer configurer) {
         super.configurePathMatch(configurer);
@@ -39,6 +43,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         super.addInterceptors(registry);
         registry.addInterceptor(servletContextHandlerInterceptor)
                 .addPathPatterns("/**");
+        registry.addInterceptor(errorInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/admin/**");
     }
 
     @Override

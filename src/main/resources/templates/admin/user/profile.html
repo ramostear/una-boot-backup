@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+    <link rel="stylesheet" href="${una}/css/bootstrap.css" />
+    <link rel="stylesheet" href="${una}/css/font-awesome.css" />
+    <link rel="stylesheet" href="${una}/css/ionicons.css" />
+    <link rel="stylesheet" href="${una}/js/layer/theme/default/layer.css"/>
+    <link rel="stylesheet" href="${una}/css/blog-boot.css" />
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0">
+            <form class="profile-form mt-4">
+                <div class="form-group form-inline">
+                    <span class="col-3 text-right">登录名:</span>
+                    <input class="form-control col-8" value="${profile.username}" readonly="readonly"/>
+                </div>
+                <div class="form-group form-inline">
+                    <span class="col-3 text-right">旧密码:</span>
+                    <input class="form-control col-8" name="oldPassword"  type="password"/>
+                </div>
+                <div class="form-group form-inline">
+                    <span class="col-3 text-right">新密码:</span>
+                    <input class="form-control col-8" name="newPassword"  type="password"/>
+                </div>
+            </form>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary mt-4 ok-btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="${una}/js/jquery.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.min.js" ></script>
+<script type="text/javascript" src="${una}/js/bootstrap.bundle.js" ></script>
+<script type="text/javascript" src="${una}/js/layer/layer.js"></script>
+<script type="text/javascript">
+    $(".ok-btn").on("click",function(){
+        var oldPassword = $("input[name=oldPassword]").val();
+        var newPassword = $("input[name=newPassword]").val();
+        if(oldPassword != null && oldPassword.trim()!="" && newPassword!=null && newPassword.trim()!=""){
+            $.ajax({
+                type:'POST',
+                url:'${una}/admin/user/${profile.id}/password',
+                data:{
+                    oldPassword:oldPassword,
+                    newPassword:newPassword
+                },
+                success:function(){
+                    parent.location.reload();
+                },
+                error:function(){
+                    layer.alert("服务器异常",{title:'系统提示',icon:0})
+                }
+            });
+        }else{
+            return;
+        }
+    });
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@ import com.ramostear.unaboot.service.PostCategoryService;
 import com.ramostear.unaboot.service.PostTagService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,7 @@ public class ArchiveServiceImpl implements ArchiveService {
 
 
     @Override
+    @Cacheable(value = "archives")
     public List<ArchiveVO> archives() {
         List<Object[]> data = postRepository.generalArchives();
         List<ArchiveVO> archiveVOList = new ArrayList<>();
@@ -53,6 +55,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     @Override
+    @Cacheable(value = "archives",key = "#archiveName")
     public List<PostListVO> findAllPostByArchive(String archiveName) {
         if(StringUtils.isBlank(archiveName)){
             return Collections.emptyList();
